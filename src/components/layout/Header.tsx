@@ -57,21 +57,21 @@ export default function Header() {
 
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3 shrink-0">
-          <div className="relative w-10 h-10">
+          <div className="relative w-14 h-14">
             <Image
               src="/images/logo.png"
               alt="Smith Carpentry Logo"
               fill
-              className="object-contain"
-              sizes="40px"
+              className="object-contain drop-shadow-[0_0_8px_rgba(0,200,200,0.3)]"
+              sizes="56px"
               priority
             />
           </div>
           <div className="hidden sm:block">
-            <span className="text-white font-display font-bold text-xl tracking-tight leading-none block">
+            <span className="text-white font-display font-bold text-2xl tracking-tight leading-none block">
               Smith
             </span>
-            <span className="text-brand text-[10px] tracking-[0.25em] uppercase leading-none">
+            <span className="text-brand text-xs tracking-[0.3em] uppercase leading-none">
               Carpentry
             </span>
           </div>
