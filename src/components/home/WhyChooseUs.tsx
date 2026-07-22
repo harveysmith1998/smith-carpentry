@@ -31,7 +31,7 @@ export default function WhyChooseUs() {
             </div>
             {/* Badge */}
             <div className="absolute -bottom-6 -right-6 bg-brand rounded-2xl p-6 shadow-luxury-lg text-charcoal-950">
-              <div className="text-4xl font-display font-bold">15+</div>
+              <div className="text-4xl font-display font-bold">10+</div>
               <div className="text-xs font-bold uppercase tracking-wider mt-1">Years of<br />Excellence</div>
             </div>
             {/* Top badge */}
@@ -55,7 +55,7 @@ export default function WhyChooseUs() {
               Craftsmanship You Can <span className="gradient-text">Trust</span>
             </h2>
             <p className="text-charcoal-500 dark:text-white/50 text-lg leading-relaxed mb-10">
-              With over 15 years of experience, Smith Carpentry has built a reputation for delivering
+              With over 10 years of experience, Smith Carpentry has built a reputation for delivering
               premium results on every project — on time, within budget, and to the highest standard.
             </p>
 

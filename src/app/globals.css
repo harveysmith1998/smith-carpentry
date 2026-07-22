@@ -1,34 +1,49 @@
 @import "tailwindcss";
 
+/* Force class-based dark variant so the whole site renders on its dark styling */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
-  /* Brand colours */
-  --color-brand:     #00C8C8;
-  --color-brand-50:  #e6fafa;
-  --color-brand-100: #b3f0f0;
-  --color-brand-200: #80e6e6;
-  --color-brand-300: #4ddbdb;
-  --color-brand-400: #1ad1d1;
-  --color-brand-500: #00C8C8;
-  --color-brand-600: #00a0a0;
-  --color-brand-700: #007878;
-  --color-brand-800: #005050;
-  --color-brand-900: #002828;
+  /* Core */
+  --color-black: #0a0a0a;
+  --color-white: #ffffff;
 
-  /* Charcoal */
-  --color-charcoal:     #1B1B1B;
-  --color-charcoal-50:  #f6f6f6;
-  --color-charcoal-100: #e0e0e0;
-  --color-charcoal-200: #b8b8b8;
-  --color-charcoal-300: #909090;
-  --color-charcoal-400: #686868;
-  --color-charcoal-500: #505050;
-  --color-charcoal-600: #404040;
-  --color-charcoal-700: #323232;
-  --color-charcoal-800: #282828;
-  --color-charcoal-900: #1B1B1B;
-  --color-charcoal-950: #111111;
+  /* Wood accent palette */
+  --color-wood:       #b88645;
+  --color-wood-light: #d4a862;
+  --color-wood-dark:  #8a6030;
 
-  /* Silver */
+  --color-grey-soft:  #e8e8e8;
+  --color-grey-muted: #999999;
+
+  /* Brand tokens remapped to wood so existing markup picks up the new accent */
+  --color-brand:     #b88645;
+  --color-brand-50:  #f6efe4;
+  --color-brand-100: #ecd9bd;
+  --color-brand-200: #e0c398;
+  --color-brand-300: #d4a862;
+  --color-brand-400: #c89550;
+  --color-brand-500: #b88645;
+  --color-brand-600: #a2743a;
+  --color-brand-700: #8a6030;
+  --color-brand-800: #6c4b26;
+  --color-brand-900: #4a331a;
+
+  /* Charcoal remapped to a near-black scale (site background family) */
+  --color-charcoal:     #0a0a0a;
+  --color-charcoal-50:  #efefef;
+  --color-charcoal-100: #2a2a2a;
+  --color-charcoal-200: #242424;
+  --color-charcoal-300: #1f1f1f;
+  --color-charcoal-400: #8a8a8a;
+  --color-charcoal-500: #b0b0b0;
+  --color-charcoal-600: #1a1a1a;
+  --color-charcoal-700: #161616;
+  --color-charcoal-800: #131313;
+  --color-charcoal-900: #111111;
+  --color-charcoal-950: #0a0a0a;
+
+  /* Silver (rarely used) */
   --color-silver:     #A8B8C0;
   --color-silver-100: #f0f4f6;
   --color-silver-200: #d8e4e8;
@@ -45,12 +60,12 @@
   --font-display: var(--font-playfair), Georgia, serif;
 
   /* Shadows */
-  --shadow-luxury:     0 20px 60px rgba(0,0,0,0.18);
-  --shadow-luxury-lg:  0 30px 80px rgba(0,0,0,0.25);
-  --shadow-glow-brand: 0 0 30px rgba(0,200,200,0.35);
-  --shadow-glow-lg:    0 0 60px rgba(0,200,200,0.2);
-  --shadow-card:       0 4px 24px rgba(0,0,0,0.08);
-  --shadow-card-hover: 0 12px 40px rgba(0,0,0,0.18);
+  --shadow-luxury:     0 20px 60px rgba(0,0,0,0.45);
+  --shadow-luxury-lg:  0 30px 80px rgba(0,0,0,0.55);
+  --shadow-glow-brand: 0 0 30px rgba(184,134,69,0.35);
+  --shadow-glow-lg:    0 0 60px rgba(184,134,69,0.20);
+  --shadow-card:       0 4px 24px rgba(0,0,0,0.35);
+  --shadow-card-hover: 0 12px 40px rgba(0,0,0,0.5);
 
   /* Animations */
   --animate-fade-up:    fadeUp 0.6s ease-out forwards;
@@ -71,19 +86,16 @@
     50%       { transform: translateY(-10px); }
   }
   @keyframes pulseGlow {
-    0%, 100% { box-shadow: 0 0 20px rgba(0,200,200,0.3); }
-    50%       { box-shadow: 0 0 40px rgba(0,200,200,0.6); }
+    0%, 100% { box-shadow: 0 0 20px rgba(184,134,69,0.3); }
+    50%       { box-shadow: 0 0 40px rgba(184,134,69,0.6); }
   }
 }
 
 :root {
-  --brand:      #00C8C8;
-  --brand-dark: #007878;
-  --charcoal:   #1B1B1B;
-  --silver:     #A8B8C0;
-  --white:      #ffffff;
-  --light-grey: #f5f5f5;
-  --text:       #222222;
+  --wood:      #b88645;
+  --wood-dark: #8a6030;
+  --black:     #0a0a0a;
+  --white:     #ffffff;
 }
 
 html {
@@ -91,52 +103,47 @@ html {
 }
 
 body {
-  color: var(--text);
-  background: var(--white);
+  color: #ffffff;
+  background: #0a0a0a;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-.dark body {
-  background: var(--charcoal);
-  color: #f5f5f5;
-}
-
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: #0a0a0a;
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--timber);
-  border-radius: 3px;
+  background: #8a6030;
+  border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--oak);
+  background: #b88645;
 }
 
 ::selection {
-  background: var(--oak);
-  color: white;
+  background: #b88645;
+  color: #0a0a0a;
 }
 
 .glass {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .glass-dark {
-  background: rgba(27, 27, 27, 0.8);
+  background: rgba(10, 10, 10, 0.8);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, #00C8C8 0%, #007878 100%);
+  background: linear-gradient(135deg, #b88645 0%, #d4a862 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -165,8 +172,11 @@ body {
   overflow: hidden;
 }
 
+.scrollbar-none::-webkit-scrollbar { display: none; }
+.scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+
 :focus-visible {
-  outline: 2px solid var(--oak);
+  outline: 2px solid #b88645;
   outline-offset: 2px;
 }
 
@@ -193,7 +203,7 @@ body {
   left: 0;
   width: 0;
   height: 2px;
-  background: linear-gradient(90deg, #00C8C8, #007878);
+  background: linear-gradient(90deg, #b88645, #d4a862);
   transition: width 0.3s ease;
 }
 .animated-underline:hover::after {
@@ -205,5 +215,5 @@ body {
 }
 .card-hover:hover {
   transform: translateY(-6px);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
 }

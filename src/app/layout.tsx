@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import FloatingButtons from "@/components/common/FloatingButtons";
+import { COMPANY } from "@/lib/data";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -19,20 +20,20 @@ const playfair = Playfair_Display({
 
 export const metadata: Metadata = {
   title: {
-    default: "Smith Carpentry | Premium Carpentry & Joinery UK",
+    default: "Smith Carpentry | Bespoke Carpentry Nottinghamshire",
     template: "%s | Smith Carpentry",
   },
   description:
-    "Expert carpentry and joinery across the UK. Bespoke residential and commercial projects — kitchens, wardrobes, shopfitting, garden rooms and more. 15+ years experience. Free quotes.",
+    "Trusted qualified carpenter with over 10 years of experience in Nottinghamshire. Bespoke joinery, kitchens, staircases, wardrobes, garden rooms & commercial fit-outs.",
   keywords: [
-    "carpentry",
-    "joinery",
-    "bespoke carpentry",
-    "shopfitting",
-    "kitchen installation",
-    "garden rooms",
-    "fitted wardrobes",
-    "UK carpenter",
+    "carpentry Nottinghamshire",
+    "carpenter Nottingham",
+    "bespoke joinery Nottinghamshire",
+    "kitchen fitter Nottingham",
+    "staircases Nottinghamshire",
+    "fitted wardrobes Nottingham",
+    "garden rooms Nottinghamshire",
+    "commercial fit-out Nottingham",
   ],
   authors: [{ name: "Smith Carpentry" }],
   creator: "Smith Carpentry",
@@ -42,12 +43,12 @@ export const metadata: Metadata = {
     locale: "en_GB",
     url: "https://smithcarpentry.co.uk",
     siteName: "Smith Carpentry",
-    title: "Smith Carpentry | Premium Carpentry & Joinery UK",
+    title: "Smith Carpentry | Bespoke Carpentry Nottinghamshire",
     description:
-      "Expert carpentry and joinery across the UK. Bespoke residential and commercial projects with 15+ years experience.",
+      "Trusted qualified carpenter with over 10 years of experience in Nottinghamshire. Bespoke joinery, kitchens, staircases and commercial fit-outs.",
     images: [
       {
-        url: "/og-image.jpg",
+        url: "/images/kitchen-61.jpg",
         width: 1200,
         height: 630,
         alt: "Smith Carpentry",
@@ -56,8 +57,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Smith Carpentry | Premium Carpentry & Joinery UK",
-    description: "Expert carpentry and joinery across the UK.",
+    title: "Smith Carpentry | Bespoke Carpentry Nottinghamshire",
+    description: "Trusted qualified carpenter with over 10 years of experience in Nottinghamshire.",
   },
   robots: {
     index: true,
@@ -72,6 +73,39 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  name: "Smith Carpentry",
+  description:
+    "Trusted qualified carpenter with over 10 years of experience in Nottinghamshire. Bespoke joinery, kitchens, staircases, wardrobes, garden rooms & commercial fit-outs.",
+  image: "https://smithcarpentry.co.uk/images/logo.jpg",
+  url: "https://smithcarpentry.co.uk",
+  telephone: COMPANY.phone,
+  email: COMPANY.email,
+  priceRange: "££",
+  areaServed: "Nottinghamshire",
+  address: {
+    "@type": "PostalAddress",
+    addressRegion: "Nottinghamshire",
+    addressCountry: "GB",
+  },
+  openingHoursSpecification: [
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      opens: "07:00",
+      closes: "18:00",
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: "Saturday",
+      opens: "08:00",
+      closes: "16:00",
+    },
+  ],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -80,9 +114,13 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${playfair.variable} h-full antialiased scroll-smooth`}
+      className={`${inter.variable} ${playfair.variable} dark h-full antialiased scroll-smooth`}
     >
-      <body className="min-h-full flex flex-col bg-white text-[#222222]">
+      <body className="min-h-full flex flex-col bg-[#0a0a0a] text-white">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />

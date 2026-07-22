@@ -6,12 +6,12 @@ import { motion } from "framer-motion";
 import { ArrowRight, CheckCircle2, Award, Users, Clock, Shield } from "lucide-react";
 
 const timeline = [
-  { year: "2009", title: "Smith Carpentry Founded", desc: "Started as a sole trader taking on first fix and second fix carpentry across the Midlands." },
+  { year: "2009", title: "Smith Carpentry Founded", desc: "Started as a sole trader taking on first fix and second fix carpentry across Nottinghamshire." },
   { year: "2012", title: "Commercial Division Launched", desc: "Expanded into shopfitting and commercial fit-outs — restaurants, offices, retail." },
   { year: "2015", title: "Team Growth", desc: "Grew to a team of specialist carpenters, taking on larger residential and commercial projects." },
   { year: "2018", title: "Garden Rooms & Extensions", desc: "Launched a dedicated garden rooms division, delivering turnkey insulated builds." },
   { year: "2021", title: "500 Projects Milestone", desc: "Passed 500 completed projects with a 5-star average rating across all review platforms." },
-  { year: "2024", title: "Nationwide Coverage", desc: "Now operating across the full UK, with specialist teams for commercial and residential work." },
+  { year: "2024", title: "Nationwide Coverage", desc: "Now operating across the whole of Nottinghamshire, with specialist teams for commercial and residential work." },
 ];
 
 const values = [
@@ -27,7 +27,7 @@ export default function AboutContent() {
       {/* Hero */}
       <section className="relative pt-32 pb-20 bg-charcoal-950 overflow-hidden">
         <div className="absolute inset-0">
-          <Image src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1600&q=85"
+          <Image src="/images/kitchen-61.jpg"
             alt="Smith Carpentry workshop" fill className="object-cover opacity-20" sizes="100vw" />
           <div className="absolute inset-0 bg-gradient-to-b from-charcoal-950/60 to-charcoal-950" />
         </div>
@@ -38,8 +38,8 @@ export default function AboutContent() {
               Built on Craftsmanship,<br /><span className="gradient-text">Driven by Quality</span>
             </h1>
             <p className="text-white/60 text-lg max-w-2xl mx-auto">
-              Smith Carpentry has spent 15+ years earning the trust of homeowners, developers and
-              commercial clients across the UK through exceptional workmanship.
+              Smith Carpentry has spent 10+ years earning the trust of homeowners, developers and
+              commercial clients across Nottinghamshire through exceptional workmanship.
             </p>
           </motion.div>
         </div>
@@ -66,13 +66,13 @@ export default function AboutContent() {
             <motion.div initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
               <span className="text-brand font-semibold text-sm uppercase tracking-widest mb-3 block">Who We Are</span>
               <h2 className="text-3xl md:text-4xl font-display font-bold text-charcoal-950 dark:text-white mb-6">
-                15 Years of Premium Carpentry
+                10+ Years of Premium Carpentry
               </h2>
               <div className="space-y-4 text-charcoal-500 dark:text-white/60 text-base leading-relaxed mb-8">
                 <p>
                   Smith Carpentry was founded in 2009 by Harvey Smith, a time-served carpenter with
                   a passion for quality workmanship and an eye for detail. What started as a local
-                  joinery service has grown into one of the UK&apos;s most trusted carpentry
+                  joinery service has grown into one of Nottinghamshire&apos;s most trusted carpentry
                   businesses.
                 </p>
                 <p>
@@ -87,7 +87,7 @@ export default function AboutContent() {
                 </p>
               </div>
               <ul className="space-y-3 mb-8">
-                {["15+ years professional experience", "Fully insured & certified", "Residential & commercial specialists", "Fixed-price, transparent quotes", "12-month workmanship guarantee"].map((item) => (
+                {["10+ years professional experience", "Fully insured & certified", "Residential & commercial specialists", "Fixed-price, transparent quotes", "12-month workmanship guarantee"].map((item) => (
                   <li key={item} className="flex items-center gap-3 text-charcoal-700 dark:text-white/70 text-sm">
                     <CheckCircle2 size={17} className="text-brand shrink-0" />
                     {item}

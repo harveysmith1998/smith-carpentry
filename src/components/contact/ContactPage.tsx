@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Phone, Mail, MapPin, Clock, ChevronDown, CheckCircle2, Send } from "lucide-react";
+import { Phone, Mail, MapPin, Clock, ChevronDown, CheckCircle2, Send, MessageCircle } from "lucide-react";
 import { COMPANY, FAQS } from "@/lib/data";
 
 function FAQItem({ q, a }: { q: string; a: string }) {
@@ -56,9 +56,24 @@ export default function ContactPage() {
             <h1 className="text-4xl md:text-6xl font-display font-bold text-white mb-5">
               Start Your <span className="gradient-text">Project</span>
             </h1>
-            <p className="text-white/60 text-lg max-w-xl mx-auto">
+            <p className="text-white/60 text-lg max-w-xl mx-auto mb-8">
               Ready to transform your space? Get a free, fixed-price quote within 48 hours.
             </p>
+            <div className="flex flex-wrap justify-center gap-3">
+              <a href={`tel:${COMPANY.phone}`}
+                className="flex items-center gap-2 px-7 py-3.5 bg-wood text-[#0a0a0a] font-bold rounded-xl hover:bg-wood-light hover:shadow-glow-brand transition-all">
+                <Phone size={17} /> Call Now
+              </a>
+              <a href={`https://wa.me/${COMPANY.whatsapp}?text=Hi, I'd like a carpentry quote.`}
+                target="_blank" rel="noopener noreferrer"
+                className="flex items-center gap-2 px-7 py-3.5 bg-[#25D366] hover:bg-[#1db954] text-white font-bold rounded-xl transition-all">
+                <MessageCircle size={17} /> WhatsApp
+              </a>
+              <a href={`mailto:${COMPANY.email}`}
+                className="flex items-center gap-2 px-7 py-3.5 border border-white/25 text-white font-bold rounded-xl hover:border-wood hover:text-wood transition-all">
+                <Mail size={17} /> Email
+              </a>
+            </div>
           </motion.div>
         </div>
       </section>
@@ -203,7 +218,7 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <div className="text-white/50 text-xs">Service Area</div>
-                      <div className="text-white font-medium text-sm">UK Nationwide</div>
+                      <div className="text-white font-medium text-sm">Nottinghamshire, UK</div>
                     </div>
                   </div>
                 </div>

@@ -47,8 +47,8 @@ export default function Footer() {
                 </div>
               </div>
               <p className="text-white/50 text-sm leading-relaxed mb-5">
-                Premium carpentry and joinery across the UK. 15+ years delivering exceptional
-                craftsmanship for residential and commercial clients.
+                Bespoke carpentry and joinery across Nottinghamshire. 10+ years delivering exceptional
+                craftsmanship for homeowners and commercial clients.
               </p>
               <div className="flex gap-3">
                 <a href={COMPANY.instagram} aria-label="Instagram"
@@ -122,7 +122,7 @@ export default function Footer() {
                 <li>
                   <div className="flex items-start gap-3 text-white/50 text-sm">
                     <MapPin size={14} className="mt-0.5 text-brand shrink-0" />
-                    United Kingdom — Nationwide
+                    Nottinghamshire, UK
                   </div>
                 </li>
               </ul>
