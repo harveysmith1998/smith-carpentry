@@ -40,13 +40,13 @@ export default function Header() {
       <div className="container mx-auto px-4 md:px-8 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center shrink-0" aria-label="Smith Carpentry home">
-          <div className="relative h-14 w-40">
+          <div className="relative h-14 w-44 bg-[#0a0a0a]">
             <Image
               src="/images/logo.jpg"
               alt="Smith Carpentry"
               fill
-              className="object-contain"
-              sizes="160px"
+              className="object-contain object-left"
+              sizes="176px"
               priority
             />
           </div>
