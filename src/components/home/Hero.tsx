@@ -27,7 +27,7 @@ export default function Hero() {
       <div className="absolute inset-0 overflow-hidden">
         <div ref={bgRef} className="absolute inset-0 scale-[1.15] will-change-transform">
           <Image
-            src="/images/kitchen-61.jpg"
+            src="/images/kitchens/kitchen-1.jpg"
             alt="Bespoke kitchen by Smith Carpentry"
             fill
             priority
@@ -47,7 +47,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="inline-block text-wood text-sm font-semibold uppercase tracking-[0.2em] mb-6"
+            className="inline-block text-brand text-sm font-semibold uppercase tracking-[0.2em] mb-6"
           >
             Nottinghamshire&apos;s Premier Carpenter
           </motion.span>
@@ -80,14 +80,14 @@ export default function Hero() {
           >
             <Link
               href="/portfolio"
-              className="group flex items-center gap-2 px-8 py-4 bg-wood text-[#0a0a0a] font-bold rounded-xl hover:bg-wood-light hover:shadow-glow-brand transition-all duration-300 text-base"
+              className="group flex items-center gap-2 px-8 py-4 bg-brand text-[#0a0a0a] font-bold rounded-xl hover:bg-brand-light hover:shadow-glow-brand transition-all duration-300 text-base"
             >
               View Our Work
               <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
             </Link>
             <Link
               href="/contact"
-              className="flex items-center gap-2 px-8 py-4 border border-white/30 text-white font-bold rounded-xl hover:border-wood hover:text-wood hover:bg-wood/5 transition-all duration-300 text-base"
+              className="flex items-center gap-2 px-8 py-4 border border-white/30 text-white font-bold rounded-xl hover:border-wood hover:text-brand hover:bg-brand/5 transition-all duration-300 text-base"
             >
               Get a Free Quote
             </Link>
@@ -102,7 +102,7 @@ export default function Hero() {
           >
             {trust.map((badge) => (
               <div key={badge} className="flex items-center gap-2">
-                <ShieldCheck size={14} className="text-wood" />
+                <ShieldCheck size={14} className="text-brand" />
                 <span className="text-white/60 text-sm font-medium">{badge}</span>
               </div>
             ))}
@@ -116,7 +116,7 @@ export default function Hero() {
         animate={{ opacity: 1 }}
         transition={{ delay: 1.2 }}
         onClick={() => document.getElementById("stats")?.scrollIntoView({ behavior: "smooth" })}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/40 hover:text-wood transition-colors"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/40 hover:text-brand transition-colors"
         aria-label="Scroll down"
       >
         <span className="text-[10px] tracking-[0.2em] uppercase">Scroll</span>

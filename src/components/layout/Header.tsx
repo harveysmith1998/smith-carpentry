@@ -59,7 +59,7 @@ export default function Header() {
               key={link.href}
               href={link.href}
               className={`px-4 py-2 text-sm font-medium transition-colors duration-200 ${
-                isActive(link.href) ? "text-wood" : "text-white/80 hover:text-wood"
+                isActive(link.href) ? "text-brand" : "text-white/80 hover:text-brand"
               }`}
             >
               {link.label}
@@ -71,14 +71,14 @@ export default function Header() {
         <div className="hidden lg:flex items-center gap-4">
           <a
             href={`tel:${COMPANY.phone}`}
-            className="flex items-center gap-2 text-white/70 hover:text-wood text-sm transition-colors"
+            className="flex items-center gap-2 text-white/70 hover:text-brand text-sm transition-colors"
           >
             <Phone size={14} />
             {COMPANY.phone}
           </a>
           <Link
             href="/contact"
-            className="px-5 py-2.5 rounded-lg bg-wood text-[#0a0a0a] text-sm font-bold hover:bg-wood-light hover:shadow-glow-brand transition-all duration-200"
+            className="px-5 py-2.5 rounded-lg bg-brand text-[#0a0a0a] text-sm font-bold hover:bg-cyan-light hover:shadow-glow-brand transition-all duration-200"
           >
             Get a Quote
           </Link>
@@ -113,7 +113,7 @@ export default function Header() {
                   href={link.href}
                   onClick={() => setMenuOpen(false)}
                   className={`block px-4 py-3 font-medium transition-colors rounded-lg hover:bg-white/5 ${
-                    isActive(link.href) ? "text-wood" : "text-white/80 hover:text-wood"
+                    isActive(link.href) ? "text-brand" : "text-white/80 hover:text-brand"
                   }`}
                 >
                   {link.label}
@@ -124,13 +124,13 @@ export default function Header() {
                   href={`tel:${COMPANY.phone}`}
                   className="flex items-center gap-2 px-4 py-3 text-white/70 text-sm"
                 >
-                  <Phone size={15} className="text-wood" />
+                  <Phone size={15} className="text-brand" />
                   {COMPANY.phone}
                 </a>
                 <Link
                   href="/contact"
                   onClick={() => setMenuOpen(false)}
-                  className="mx-4 py-3 rounded-lg bg-wood text-[#0a0a0a] text-center font-bold text-sm"
+                  className="mx-4 py-3 rounded-lg bg-brand text-[#0a0a0a] text-center font-bold text-sm"
                 >
                   Get a Quote
                 </Link>

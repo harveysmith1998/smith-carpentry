@@ -1,6 +1,5 @@
 @import "tailwindcss";
 
-/* Force class-based dark variant so the whole site renders on its dark styling */
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
@@ -8,28 +7,33 @@
   --color-black: #0a0a0a;
   --color-white: #ffffff;
 
-  /* Wood accent palette */
-  --color-wood:       #b88645;
-  --color-wood-light: #d4a862;
-  --color-wood-dark:  #8a6030;
+  /* Cyan brand palette — matches logo */
+  --color-cyan:       #00C8C8;
+  --color-cyan-light: #00e0e0;
+  --color-cyan-dark:  #009898;
 
-  --color-grey-soft:  #e8e8e8;
-  --color-grey-muted: #999999;
+  /* Brand tokens → cyan */
+  --color-brand:     #00C8C8;
+  --color-brand-50:  #e0fafa;
+  --color-brand-100: #b3f0f0;
+  --color-brand-200: #80e5e5;
+  --color-brand-300: #4dd9d9;
+  --color-brand-400: #26d0d0;
+  --color-brand-500: #00C8C8;
+  --color-brand-600: #009898;
+  --color-brand-700: #007070;
+  --color-brand-800: #004848;
+  --color-brand-900: #002828;
 
-  /* Brand tokens remapped to wood so existing markup picks up the new accent */
-  --color-brand:     #b88645;
-  --color-brand-50:  #f6efe4;
-  --color-brand-100: #ecd9bd;
-  --color-brand-200: #e0c398;
-  --color-brand-300: #d4a862;
-  --color-brand-400: #c89550;
-  --color-brand-500: #b88645;
-  --color-brand-600: #a2743a;
-  --color-brand-700: #8a6030;
-  --color-brand-800: #6c4b26;
-  --color-brand-900: #4a331a;
+  /* Silver accent (matches logo SMITH text) */
+  --color-silver:     #c0c0c0;
+  --color-silver-100: #f0f4f6;
+  --color-silver-200: #d8e4e8;
+  --color-silver-300: #C0D0D8;
+  --color-silver-400: #A8B8C0;
+  --color-silver-500: #8898A0;
 
-  /* Charcoal remapped to a near-black scale (site background family) */
+  /* Charcoal scale */
   --color-charcoal:     #0a0a0a;
   --color-charcoal-50:  #efefef;
   --color-charcoal-100: #2a2a2a;
@@ -43,18 +47,6 @@
   --color-charcoal-900: #111111;
   --color-charcoal-950: #0a0a0a;
 
-  /* Silver (rarely used) */
-  --color-silver:     #A8B8C0;
-  --color-silver-100: #f0f4f6;
-  --color-silver-200: #d8e4e8;
-  --color-silver-300: #C0D0D8;
-  --color-silver-400: #A8B8C0;
-  --color-silver-500: #8898A0;
-  --color-silver-600: #687880;
-  --color-silver-700: #485860;
-  --color-silver-800: #283840;
-  --color-silver-900: #182028;
-
   /* Fonts */
   --font-sans:    var(--font-inter), system-ui, sans-serif;
   --font-display: var(--font-playfair), Georgia, serif;
@@ -62,8 +54,8 @@
   /* Shadows */
   --shadow-luxury:     0 20px 60px rgba(0,0,0,0.45);
   --shadow-luxury-lg:  0 30px 80px rgba(0,0,0,0.55);
-  --shadow-glow-brand: 0 0 30px rgba(184,134,69,0.35);
-  --shadow-glow-lg:    0 0 60px rgba(184,134,69,0.20);
+  --shadow-glow-brand: 0 0 30px rgba(0,200,200,0.4);
+  --shadow-glow-lg:    0 0 60px rgba(0,200,200,0.2);
   --shadow-card:       0 4px 24px rgba(0,0,0,0.35);
   --shadow-card-hover: 0 12px 40px rgba(0,0,0,0.5);
 
@@ -86,14 +78,14 @@
     50%       { transform: translateY(-10px); }
   }
   @keyframes pulseGlow {
-    0%, 100% { box-shadow: 0 0 20px rgba(184,134,69,0.3); }
-    50%       { box-shadow: 0 0 40px rgba(184,134,69,0.6); }
+    0%, 100% { box-shadow: 0 0 20px rgba(0,200,200,0.3); }
+    50%       { box-shadow: 0 0 40px rgba(0,200,200,0.6); }
   }
 }
 
 :root {
-  --wood:      #b88645;
-  --wood-dark: #8a6030;
+  --cyan:      #00C8C8;
+  --cyan-dark: #009898;
   --black:     #0a0a0a;
   --white:     #ffffff;
 }
@@ -109,24 +101,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-::-webkit-scrollbar {
-  width: 8px;
-}
-::-webkit-scrollbar-track {
-  background: #0a0a0a;
-}
-::-webkit-scrollbar-thumb {
-  background: #8a6030;
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #b88645;
-}
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #0a0a0a; }
+::-webkit-scrollbar-thumb { background: #009898; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #00C8C8; }
 
-::selection {
-  background: #b88645;
-  color: #0a0a0a;
-}
+::selection { background: #00C8C8; color: #0a0a0a; }
 
 .glass {
   background: rgba(255, 255, 255, 0.05);
@@ -143,21 +123,15 @@ body {
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, #b88645 0%, #d4a862 100%);
+  background: linear-gradient(135deg, #00C8C8 0%, #00e0e0 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-.img-zoom {
-  overflow: hidden;
-}
-.img-zoom img {
-  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.img-zoom:hover img {
-  transform: scale(1.05);
-}
+.img-zoom { overflow: hidden; }
+.img-zoom img { transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+.img-zoom:hover img { transform: scale(1.05); }
 
 .line-clamp-2 {
   display: -webkit-box;
@@ -175,27 +149,14 @@ body {
 .scrollbar-none::-webkit-scrollbar { display: none; }
 .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
 
-:focus-visible {
-  outline: 2px solid #b88645;
-  outline-offset: 2px;
-}
+:focus-visible { outline: 2px solid #00C8C8; outline-offset: 2px; }
 
-.section-padding {
-  padding-top: 5rem;
-  padding-bottom: 5rem;
-}
-
+.section-padding { padding-top: 5rem; padding-bottom: 5rem; }
 @media (min-width: 768px) {
-  .section-padding {
-    padding-top: 7rem;
-    padding-bottom: 7rem;
-  }
+  .section-padding { padding-top: 7rem; padding-bottom: 7rem; }
 }
 
-.animated-underline {
-  position: relative;
-  display: inline-block;
-}
+.animated-underline { position: relative; display: inline-block; }
 .animated-underline::after {
   content: "";
   position: absolute;
@@ -203,16 +164,12 @@ body {
   left: 0;
   width: 0;
   height: 2px;
-  background: linear-gradient(90deg, #b88645, #d4a862);
+  background: linear-gradient(90deg, #00C8C8, #00e0e0);
   transition: width 0.3s ease;
 }
-.animated-underline:hover::after {
-  width: 100%;
-}
+.animated-underline:hover::after { width: 100%; }
 
-.card-hover {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
+.card-hover { transition: transform 0.3s ease, box-shadow 0.3s ease; }
 .card-hover:hover {
   transform: translateY(-6px);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
