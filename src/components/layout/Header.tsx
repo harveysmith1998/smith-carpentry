@@ -50,30 +50,22 @@ export default function Header() {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled ? "bg-charcoal-900/95 backdrop-blur-xl shadow-luxury py-3" : "bg-transparent py-5"
+        scrolled ? "bg-black shadow-luxury py-3" : "bg-black/80 backdrop-blur-sm py-5"
       }`}
     >
       <div className="container mx-auto px-4 md:px-8 flex items-center justify-between">
 
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-3 shrink-0">
-          <div className="relative w-14 h-14">
+        <Link href="/" className="flex items-center shrink-0">
+          <div className="relative h-14 w-40">
             <Image
-              src="/images/logo.png"
+              src="/images/logo.jpg"
               alt="Smith Carpentry Logo"
               fill
-              className="object-contain drop-shadow-[0_0_8px_rgba(0,200,200,0.3)]"
-              sizes="56px"
+              className="object-contain"
+              sizes="160px"
               priority
             />
-          </div>
-          <div className="hidden sm:block">
-            <span className="text-white font-display font-bold text-2xl tracking-tight leading-none block">
-              Smith
-            </span>
-            <span className="text-brand text-xs tracking-[0.3em] uppercase leading-none">
-              Carpentry
-            </span>
           </div>
         </Link>
 

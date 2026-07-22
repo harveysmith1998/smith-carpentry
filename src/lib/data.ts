@@ -9,10 +9,10 @@ export const COMPANY = {
   tagline:       "Premium Carpentry & Joinery Across the UK",
   subtagline:
     "Expert craftsmanship delivering bespoke residential and commercial projects with precision, quality and attention to detail.",
-  phone:      "07700 900000",
-  email:      "info@smithcarpentry.co.uk",
-  address:    "United Kingdom",
-  whatsapp:   "447700900000",
+  phone:      "07462 918476",
+  email:      "smithcarpentryltd@outlook.com",
+  address:    "Nottinghamshire, UK",
+  whatsapp:   "447462918476",
   instagram:  "https://instagram.com/smith_carpentry_and_joinery",
   facebook:   "https://facebook.com/smithcarpentry",
   businessHours: [

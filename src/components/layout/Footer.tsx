@@ -41,13 +41,9 @@ export default function Footer() {
 
             {/* Brand */}
             <div className="lg:col-span-1">
-              <div className="flex items-center gap-4 mb-5">
-                <div className="relative w-16 h-16">
-                  <Image src="/images/logo.png" alt="Smith Carpentry" fill className="object-contain drop-shadow-[0_0_10px_rgba(0,200,200,0.25)]" sizes="64px" />
-                </div>
-                <div>
-                  <span className="text-white font-display font-bold text-2xl leading-none block">Smith</span>
-                  <span className="text-brand text-xs tracking-[0.3em] uppercase leading-none">Carpentry</span>
+              <div className="flex items-center mb-5">
+                <div className="relative h-16 w-48">
+                  <Image src="/images/logo.jpg" alt="Smith Carpentry" fill className="object-contain" sizes="192px" />
                 </div>
               </div>
               <p className="text-white/50 text-sm leading-relaxed mb-5">
