@@ -6,12 +6,10 @@ import { motion } from "framer-motion";
 import { ArrowRight, CheckCircle2, Award, Users, Clock, Shield } from "lucide-react";
 
 const timeline = [
-  { year: "2009", title: "Smith Carpentry Founded", desc: "Started as a sole trader taking on first fix and second fix carpentry across Nottinghamshire." },
-  { year: "2012", title: "Commercial Division Launched", desc: "Expanded into shopfitting and commercial fit-outs — restaurants, offices, retail." },
-  { year: "2015", title: "Team Growth", desc: "Grew to a team of specialist carpenters, taking on larger residential and commercial projects." },
-  { year: "2018", title: "Garden Rooms & Extensions", desc: "Launched a dedicated garden rooms division, delivering turnkey insulated builds." },
-  { year: "2021", title: "500 Projects Milestone", desc: "Passed 500 completed projects with a 5-star average rating across all review platforms." },
-  { year: "2024", title: "Nationwide Coverage", desc: "Now operating across the whole of Nottinghamshire, with specialist teams for commercial and residential work." },
+  { year: "Age 16", title: "Apprentice Competition Winner", desc: "Won carpentry apprentice competitions at 16 — an early sign of the attention to detail and drive that defines everything Harvey does." },
+  { year: "10+", title: "Years in the Trade", desc: "Over a decade of hands-on experience across first fix, second fix, bespoke joinery, commercial fit-outs and everything in between." },
+  { year: "500+", title: "Projects Completed", desc: "From single rooms to full commercial builds — every project completed to the same uncompromising standard." },
+  { year: "Always", title: "Perfection at Own Cost", desc: "Harvey's aim is perfection, even when that means going the extra mile at his own expense. Customers come first, always." },
 ];
 
 const values = [
@@ -51,43 +49,37 @@ export default function AboutContent() {
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <motion.div initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
               <div className="relative rounded-2xl overflow-hidden shadow-luxury">
-                <div className="img-zoom relative h-[500px]">
-                  <Image src="/images/panelling/cover.jpg" alt="Harvey Smith at work" fill className="object-cover"
+                <div className="img-zoom relative h-[560px]">
+                  <Image src="/images/harvey-working.jpg" alt="Harvey Smith at work" fill className="object-cover object-center"
                     sizes="(max-width:1024px) 100vw,50vw" />
                 </div>
-              </div>
-              {/* Floating stat */}
-              <div className="absolute -bottom-4 -right-4 bg-brand rounded-xl p-5 shadow-luxury-lg text-charcoal-950">
-                <div className="text-3xl font-display font-bold">500+</div>
-                <div className="text-xs font-bold uppercase tracking-wide">Projects Done</div>
               </div>
             </motion.div>
 
             <motion.div initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
-              <span className="text-brand font-semibold text-sm uppercase tracking-widest mb-3 block">Who We Are</span>
+              <span className="text-brand font-semibold text-sm uppercase tracking-widest mb-3 block">The Man Behind the Work</span>
               <h2 className="text-3xl md:text-4xl font-display font-bold text-charcoal-950 dark:text-white mb-6">
-                10+ Years of Premium Carpentry
+                Harvey Smith — Carpenter & Joiner
               </h2>
               <div className="space-y-4 text-charcoal-500 dark:text-white/60 text-base leading-relaxed mb-8">
                 <p>
-                  Smith Carpentry was founded in 2009 by Harvey Smith, a time-served carpenter with
-                  a passion for quality workmanship and an eye for detail. What started as a local
-                  joinery service has grown into one of Nottinghamshire&apos;s most trusted carpentry
-                  businesses.
+                  Harvey has been in the trade for over 10 years, but his passion for carpentry
+                  started long before that. At just 16 years old he was winning apprentice
+                  competitions — proof, even then, of a natural eye for detail and a drive
+                  to be the best.
                 </p>
                 <p>
-                  We serve homeowners who demand the best, property developers who need reliable
-                  tradespeople, and commercial clients who need fit-outs delivered on time and
-                  to spec. From first fix frames to bespoke furniture — we do it all, and we do
-                  it properly.
+                  That same mindset shapes every project today. Whether it&apos;s a bespoke kitchen,
+                  a commercial shopfit, or first-fix framing on a new build — Harvey brings the
+                  same focus, the same care, and the same commitment to getting it right.
                 </p>
                 <p>
-                  Every project is backed by our commitment to quality, clear communication and
-                  a finish that speaks for itself.
+                  His aim is perfection, even at his own cost. Customers always come first —
+                  and that&apos;s not just a line. It&apos;s the way he has worked from day one.
                 </p>
               </div>
               <ul className="space-y-3 mb-8">
-                {["10+ years professional experience", "Fully insured & certified", "Residential & commercial specialists", "Fixed-price, transparent quotes", "12-month workmanship guarantee"].map((item) => (
+                {["10+ years professional experience", "Apprentice competition winner at 16", "Keen eye for detail on every job", "Customer satisfaction is always the priority", "12-month workmanship guarantee"].map((item) => (
                   <li key={item} className="flex items-center gap-3 text-charcoal-700 dark:text-white/70 text-sm">
                     <CheckCircle2 size={17} className="text-brand shrink-0" />
                     {item}
@@ -111,10 +103,10 @@ export default function AboutContent() {
           <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
             <span className="text-brand font-semibold text-sm uppercase tracking-widest mb-4 block">Our Mission</span>
             <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-6">
-              &ldquo;To deliver carpentry and joinery that stands the test of time — crafted with
-              skill, completed with pride and built to exceed every expectation.&rdquo;
+              &ldquo;My aim is perfection — even at my own cost. I&apos;ve always had a keen eye
+              for detail and I&apos;m always driven to keep customers happy. That&apos;s never changed.&rdquo;
             </h2>
-            <p className="text-white/50">— Harvey Smith, Founder</p>
+            <p className="text-white/50">— Harvey Smith, Smith Carpentry</p>
           </motion.div>
         </div>
       </section>
@@ -149,8 +141,8 @@ export default function AboutContent() {
         <div className="container mx-auto px-4 md:px-8">
           <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
             transition={{ duration: 0.6 }} className="text-center mb-14">
-            <span className="text-brand font-semibold text-sm uppercase tracking-widest mb-3 block">Our Journey</span>
-            <h2 className="text-3xl md:text-4xl font-display font-bold text-charcoal-950 dark:text-white">The Smith Carpentry Story</h2>
+            <span className="text-brand font-semibold text-sm uppercase tracking-widest mb-3 block">By the Numbers</span>
+            <h2 className="text-3xl md:text-4xl font-display font-bold text-charcoal-950 dark:text-white">What Drives Smith Carpentry</h2>
           </motion.div>
           <div className="relative max-w-3xl mx-auto">
             <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-px bg-brand/20" />
