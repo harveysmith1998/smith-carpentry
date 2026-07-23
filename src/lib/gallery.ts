@@ -16,9 +16,10 @@ function getImagesFromFolder(folder: string): { cover: string; images: string[] 
   if (!fs.existsSync(dir)) return { cover: "", images: [] };
   try {
     const all = fs.readdirSync(dir).filter((f) => /\.(jpg|jpeg|png|webp)$/i.test(f));
-    const cover = all.includes("main.jpg") ? `/images/${folder}/main.jpg` : "";
+    const coverFile = all.find((f) => f === "cover.jpg" || f === "main.jpg") ?? "";
+    const cover = coverFile ? `/images/${folder}/${coverFile}` : "";
     const rest = all
-      .filter((f) => f !== "main.jpg")
+      .filter((f) => f !== "main.jpg" && f !== "cover.jpg")
       .sort((a, b) => {
         const nA = parseInt(a.match(/(\d+)/)?.[1] ?? "0");
         const nB = parseInt(b.match(/(\d+)/)?.[1] ?? "0");
