@@ -52,7 +52,7 @@ export default function TestimonialsPage() {
       <section className="section-padding bg-[#0a0a0a]">
         <div className="container mx-auto px-4 md:px-8">
           <div className="columns-1 md:columns-2 lg:columns-3 gap-5 space-y-5">
-            {[...TESTIMONIALS, ...TESTIMONIALS].map((t, i) => (
+            {TESTIMONIALS.map((t, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
@@ -62,10 +62,16 @@ export default function TestimonialsPage() {
                 <div className="flex gap-1 mb-4">
                   {[...Array(t.rating)].map((_, j) => <Star key={j} size={14} className="text-brand fill-brand" />)}
                 </div>
-                <Quote size={24} className="text-brand/20 mb-3" />
-                <p className="text-white/70 text-sm leading-relaxed mb-5 italic">
-                  &ldquo;{t.text}&rdquo;
-                </p>
+                {t.text ? (
+                  <>
+                    <Quote size={24} className="text-brand/20 mb-3" />
+                    <p className="text-white/70 text-sm leading-relaxed mb-5 italic">
+                      &ldquo;{t.text}&rdquo;
+                    </p>
+                  </>
+                ) : (
+                  <p className="text-white/40 text-sm mb-5 italic">5-star rating — no written review left.</p>
+                )}
                 <div className="flex items-center gap-3 pt-4 border-t border-white/8">
                   <div className="w-10 h-10 rounded-full bg-brand/15 ring-2 ring-brand/30 text-brand text-sm font-bold flex items-center justify-center shrink-0">
                     {initials(t.name)}
