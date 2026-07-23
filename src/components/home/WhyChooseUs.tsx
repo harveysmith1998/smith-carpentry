@@ -21,7 +21,7 @@ export default function WhyChooseUs() {
             <div className="rounded-2xl overflow-hidden shadow-luxury">
               <div className="img-zoom relative h-[540px]">
                 <Image
-                  src="/images/feature-wall-1.jpg"
+                  src="/images/panelling/cover.jpg"
                   alt="Smith Carpentry quality workmanship"
                   fill className="object-cover"
                   sizes="(max-width:1024px) 100vw,50vw"

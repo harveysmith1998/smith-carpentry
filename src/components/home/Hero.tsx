@@ -27,7 +27,7 @@ export default function Hero() {
       <div className="absolute inset-0 overflow-hidden">
         <div ref={bgRef} className="absolute inset-0 scale-[1.15] will-change-transform">
           <Image
-            src="/images/kitchens/kitchen-1.jpg"
+            src="/images/kitchens/cover.jpg"
             alt="Bespoke kitchen by Smith Carpentry"
             fill
             priority

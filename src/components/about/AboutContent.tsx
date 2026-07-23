@@ -27,7 +27,7 @@ export default function AboutContent() {
       {/* Hero */}
       <section className="relative pt-32 pb-20 bg-charcoal-950 overflow-hidden">
         <div className="absolute inset-0">
-          <Image src="/images/kitchen-61.jpg"
+          <Image src="/images/kitchens/cover.jpg"
             alt="Smith Carpentry workshop" fill className="object-cover opacity-20" sizes="100vw" />
           <div className="absolute inset-0 bg-gradient-to-b from-charcoal-950/60 to-charcoal-950" />
         </div>
@@ -52,7 +52,7 @@ export default function AboutContent() {
             <motion.div initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
               <div className="relative rounded-2xl overflow-hidden shadow-luxury">
                 <div className="img-zoom relative h-[500px]">
-                  <Image src="/images/feature-wall-1.jpg" alt="Harvey Smith at work" fill className="object-cover"
+                  <Image src="/images/panelling/cover.jpg" alt="Harvey Smith at work" fill className="object-cover"
                     sizes="(max-width:1024px) 100vw,50vw" />
                 </div>
               </div>

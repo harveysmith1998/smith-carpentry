@@ -48,7 +48,7 @@ export const metadata: Metadata = {
       "Trusted qualified carpenter with over 10 years of experience in Nottinghamshire. Bespoke joinery, kitchens, staircases and commercial fit-outs.",
     images: [
       {
-        url: "/images/kitchen-61.jpg",
+        url: "/images/kitchens/cover.jpg",
         width: 1200,
         height: 630,
         alt: "Smith Carpentry",

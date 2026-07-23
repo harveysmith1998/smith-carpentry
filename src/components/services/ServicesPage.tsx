@@ -12,7 +12,7 @@ export default function ServicesPage() {
       {/* Hero */}
       <section className="relative pt-32 pb-20 bg-charcoal-950 overflow-hidden">
         <div className="absolute inset-0">
-          <Image src="/images/feature-wall-1.jpg" alt="Smith Carpentry Services" fill
+          <Image src="/images/panelling/cover.jpg" alt="Smith Carpentry Services" fill
             className="object-cover opacity-15" sizes="100vw" />
           <div className="absolute inset-0 bg-gradient-to-b from-charcoal-950/70 to-charcoal-950" />
         </div>

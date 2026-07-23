@@ -6,11 +6,11 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 
 const recent = [
-  { title: "Bespoke Shaker Kitchen",  category: "Kitchens",     image: "/images/kitchen-61.jpg", height: "440px", span: true },
-  { title: "Oak Staircase",           category: "Staircases",   image: "/images/staircase-1.jpg", height: "210px" },
-  { title: "Alcove Media Wall",       category: "Media Walls",  image: "/images/media-wall-1.jpg", height: "210px" },
-  { title: "Fitted Wardrobes",        category: "Wardrobes",    image: "/images/wardrobe-1.jpg", height: "210px" },
-  { title: "Insulated Garden Room",   category: "Garden Rooms", image: "/images/garden-kitchen-1.jpg", height: "210px" },
+  { title: "Bespoke Shaker Kitchen",  category: "Kitchens",     image: "/images/kitchens/cover.jpg",     height: "440px", span: true },
+  { title: "Oak Staircase",           category: "Staircases",   image: "/images/stairs/cover.jpg",       height: "210px" },
+  { title: "Alcove Media Wall",       category: "Media Walls",  image: "/images/media-walls/cover.jpg",  height: "210px" },
+  { title: "Fitted Wardrobes",        category: "Wardrobes",    image: "/images/wardrobes/cover.jpg",    height: "210px" },
+  { title: "Insulated Garden Room",   category: "Garden Rooms", image: "/images/garden-rooms/cover.jpg", height: "210px" },
 ];
 
 export default function RecentProjects() {
