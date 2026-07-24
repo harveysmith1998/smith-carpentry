@@ -26,22 +26,29 @@ export const metadata: Metadata = {
   description:
     "Trusted qualified carpenter with over 10 years of experience in Nottinghamshire. Bespoke joinery, kitchens, staircases, wardrobes, garden rooms & commercial fit-outs.",
   keywords: [
-    "carpentry Nottinghamshire",
     "carpenter Nottingham",
-    "bespoke joinery Nottinghamshire",
+    "carpentry Nottingham",
+    "carpenter Nottinghamshire",
+    "bespoke joinery Nottingham",
     "kitchen fitter Nottingham",
-    "staircases Nottinghamshire",
     "fitted wardrobes Nottingham",
-    "garden rooms Nottinghamshire",
+    "staircases Nottingham",
+    "garden rooms Nottingham",
+    "shopfitting Nottingham",
+    "media wall Nottingham",
+    "wall panelling Nottingham",
+    "first fix carpenter Nottingham",
     "commercial fit-out Nottingham",
+    "carpenter Mansfield",
+    "carpenter Sutton-in-Ashfield",
   ],
   authors: [{ name: "Smith Carpentry" }],
   creator: "Smith Carpentry",
-  metadataBase: new URL("https://smithcarpentry.co.uk"),
+  metadataBase: new URL("https://www.smithcarpentry.uk"),
   openGraph: {
     type: "website",
     locale: "en_GB",
-    url: "https://smithcarpentry.co.uk",
+    url: "https://www.smithcarpentry.uk",
     siteName: "Smith Carpentry",
     title: "Smith Carpentry | Bespoke Carpentry Nottinghamshire",
     description:
@@ -75,20 +82,35 @@ export const metadata: Metadata = {
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "LocalBusiness",
+  "@type": "Carpenter",
   name: "Smith Carpentry",
   description:
     "Trusted qualified carpenter with over 10 years of experience in Nottinghamshire. Bespoke joinery, kitchens, staircases, wardrobes, garden rooms & commercial fit-outs.",
-  image: "https://smithcarpentry.co.uk/images/logo.jpg",
-  url: "https://smithcarpentry.co.uk",
+  image: "https://www.smithcarpentry.uk/images/logo.jpg",
+  url: "https://www.smithcarpentry.uk",
   telephone: COMPANY.phone,
   email: COMPANY.email,
   priceRange: "££",
-  areaServed: "Nottinghamshire",
+  areaServed: [
+    { "@type": "City", name: "Nottingham" },
+    { "@type": "City", name: "Mansfield" },
+    { "@type": "City", name: "Sutton-in-Ashfield" },
+    { "@type": "City", name: "Newark" },
+    { "@type": "City", name: "West Bridgford" },
+    { "@type": "City", name: "Arnold" },
+    { "@type": "City", name: "Worksop" },
+    { "@type": "AdministrativeArea", name: "Nottinghamshire" },
+  ],
   address: {
     "@type": "PostalAddress",
+    addressLocality: "Nottingham",
     addressRegion: "Nottinghamshire",
     addressCountry: "GB",
+  },
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: 52.9548,
+    longitude: -1.1581,
   },
   openingHoursSpecification: [
     {
@@ -103,6 +125,10 @@ const jsonLd = {
       opens: "08:00",
       closes: "16:00",
     },
+  ],
+  sameAs: [
+    COMPANY.instagram,
+    COMPANY.facebook,
   ],
 };
 
