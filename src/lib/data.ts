@@ -209,6 +209,34 @@ export const TESTIMONIALS = [
     rating:  5,
     project: "5-Star Review",
   },
+  {
+    name:    "Kieran Grant",
+    role:    "Homeowner, Nottinghamshire",
+    text:    "Brilliant service, nice lad. Got me in very quick to do wainscot panelling, did an amazing job and left the place clean and tidy.",
+    rating:  5,
+    project: "Wall Panelling",
+  },
+  {
+    name:    "Blane Lee",
+    role:    "Homeowner, Nottinghamshire",
+    text:    "Always does an amazing job finished to the highest quality. Harvey has fitted me a kitchen, converted my conservatory to a usable room with a proper roof, a media wall, wall panelling in the hallway and flooring — all done perfectly.",
+    rating:  5,
+    project: "Kitchen, Media Wall & More",
+  },
+  {
+    name:    "Ben Moore",
+    role:    "Homeowner, Nottinghamshire",
+    text:    "Professional from start to finish, attention to detail and always quality work. Goes above and beyond to make the job perfect. Extremely satisfied with the works carried out. Always punctual and consistent communication making for a seamless experience.",
+    rating:  5,
+    project: "Carpentry & Joinery",
+  },
+  {
+    name:    "Josh Dyer",
+    role:    "Customer, Nottinghamshire",
+    text:    "Great price. Had Harvey round to board out my camper and build my bed — top quality work, highly recommend.",
+    rating:  5,
+    project: "Bespoke Build",
+  },
 ];
 
 export const WHY_CHOOSE_US = [
