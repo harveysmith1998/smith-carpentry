@@ -182,6 +182,13 @@ export const SERVICES = [
 
 export const TESTIMONIALS = [
   {
+    name:    "Finn Hicking",
+    role:    "Homeowner, Nottinghamshire",
+    text:    "Reasonable price. Very pleased with the work and got me in extremely fast! I wasn't in when the work was done but the area used was left tidy and clean — would highly recommend. Many thanks again.",
+    rating:  5,
+    project: "Carpentry",
+  },
+  {
     name:    "Marc Hennessy",
     role:    "Homeowner, Nottinghamshire",
     text:    "Great price. Amazing media wall with electric fire and lighting designed and fitted by Harvey. The quality of the finish is second to none — couldn't recommend highly enough.",
