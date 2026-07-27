@@ -182,6 +182,13 @@ export const SERVICES = [
 
 export const TESTIMONIALS = [
   {
+    name:    "Lance Mott",
+    role:    "Homeowner, Nottinghamshire",
+    text:    "We had the pleasure of Smith Carpentry assisting us with a renovation. Harvey was exceptional throughout the entire process. Even when I felt overwhelmed by the stress of undertaking such a project for the first time, Harvey consistently reassured us that everything would be successful — and indeed it was. Smith Carpentry skillfully completed our fully fitted shaker-style kitchen, utility room, boot room, and expertly installed our 1960s-style oak doors. If anyone needs a reference or wants to see photos of Smith Carpentry's work, please reach out.",
+    rating:  5,
+    project: "Kitchen, Utility Room & Oak Doors",
+  },
+  {
     name:    "Finn Hicking",
     role:    "Homeowner, Nottinghamshire",
     text:    "Reasonable price. Very pleased with the work and got me in extremely fast! I wasn't in when the work was done but the area used was left tidy and clean — would highly recommend. Many thanks again.",
