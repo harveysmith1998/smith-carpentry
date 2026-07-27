@@ -182,6 +182,13 @@ export const SERVICES = [
 
 export const TESTIMONIALS = [
   {
+    name:    "Marc Hennessy",
+    role:    "Homeowner, Nottinghamshire",
+    text:    "Great price. Amazing media wall with electric fire and lighting designed and fitted by Harvey. The quality of the finish is second to none — couldn't recommend highly enough.",
+    rating:  5,
+    project: "Media Wall",
+  },
+  {
     name:    "Ray Wright",
     role:    "Homeowner, Nottinghamshire",
     text:    "Excellent craftsmanship. Smith Carpentry installed all our joinery demands including a glass & oak staircase at our chalet bungalow complete refurbishment and manufactured our wardrobes on site. Brilliant craftsmen and also polite and well mannered. Highly recommended.",
