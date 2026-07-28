@@ -182,6 +182,13 @@ export const SERVICES = [
 
 export const TESTIMONIALS = [
   {
+    name:    "Victoria Moore",
+    role:    "Homeowner, Nottinghamshire",
+    text:    "Harvey has completed multiple projects on our home and we could not be happier. All completed in time and with high quality finish. So glad we got the recommendation — it's hard to find tradespeople you can 100% trust.",
+    rating:  5,
+    project: "Multiple Projects",
+  },
+  {
     name:    "Thomas North",
     role:    "Homeowner, Nottinghamshire",
     text:    "Harvey has carried out a number of carpentry works for us, including a full kitchen fit out. He is a hard worker with an incredible attention to detail. Highly recommended.",
