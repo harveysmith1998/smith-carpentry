@@ -185,6 +185,13 @@ export const SERVICES = [
 
 export const TESTIMONIALS = [
   {
+    name:    "Maisy Smith",
+    role:    "Homeowner, Nottinghamshire",
+    text:    "Fantastic service — we had Harvey in to fit our beautiful bespoke oak doors throughout our whole house. Great customer service, would highly recommend!",
+    rating:  5,
+    project: "Oak Doors",
+  },
+  {
     name:    "Victoria Moore",
     role:    "Homeowner, Nottinghamshire",
     text:    "Harvey has completed multiple projects on our home and we could not be happier. All completed in time and with high quality finish. So glad we got the recommendation — it's hard to find tradespeople you can 100% trust.",
