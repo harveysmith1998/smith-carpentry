@@ -182,6 +182,13 @@ export const SERVICES = [
 
 export const TESTIMONIALS = [
   {
+    name:    "Thomas North",
+    role:    "Homeowner, Nottinghamshire",
+    text:    "Harvey has carried out a number of carpentry works for us, including a full kitchen fit out. He is a hard worker with an incredible attention to detail. Highly recommended.",
+    rating:  5,
+    project: "Kitchen Fit Out",
+  },
+  {
     name:    "Lance Mott",
     role:    "Homeowner, Nottinghamshire",
     text:    "We had the pleasure of Smith Carpentry assisting us with a renovation. Harvey was exceptional throughout the entire process. Even when I felt overwhelmed by the stress of undertaking such a project for the first time, Harvey consistently reassured us that everything would be successful — and indeed it was. Smith Carpentry skillfully completed our fully fitted shaker-style kitchen, utility room, boot room, and expertly installed our 1960s-style oak doors. If anyone needs a reference or wants to see photos of Smith Carpentry's work, please reach out.",
