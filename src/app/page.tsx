@@ -8,6 +8,7 @@ import WhyChooseUs from "@/components/home/WhyChooseUs";
 import Testimonials from "@/components/home/Testimonials";
 import AreasCovered from "@/components/home/AreasCovered";
 import ContactCTA from "@/components/home/ContactCTA";
+import VideoSection from "@/components/home/VideoSection";
 
 export const metadata: Metadata = {
   title: "Smith Carpentry | Bespoke Carpentry Nottinghamshire",
@@ -22,6 +23,7 @@ export default function HomePage() {
       <Stats />
       <AboutSection />
       <FeaturedServices />
+      <VideoSection />
       <RecentProjects />
       <WhyChooseUs />
       <Testimonials />
