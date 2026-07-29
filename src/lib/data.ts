@@ -185,6 +185,13 @@ export const SERVICES = [
 
 export const TESTIMONIALS = [
   {
+    name:    "Ryan Needham",
+    role:    "Homeowner, Nottinghamshire",
+    text:    "Had all my internal doors fitted — did a great job! Excellent service and reasonably priced.",
+    rating:  5,
+    project: "Internal Doors",
+  },
+  {
     name:    "Maisy Smith",
     role:    "Homeowner, Nottinghamshire",
     text:    "Fantastic service — we had Harvey in to fit our beautiful bespoke oak doors throughout our whole house. Great customer service, would highly recommend!",
