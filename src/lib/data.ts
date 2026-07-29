@@ -185,6 +185,20 @@ export const SERVICES = [
 
 export const TESTIMONIALS = [
   {
+    name:    "Tommy Barwick",
+    role:    "Homeowner, Nottinghamshire",
+    text:    "I'm extremely pleased with the work carried out replacing all of our internal doors and fitting the new ironmongery. The workmanship was excellent, with great attention to detail and a high-quality finish throughout. Everything was completed to a very high standard, and our house was left clean and tidy each day.",
+    rating:  5,
+    project: "Internal Doors & Ironmongery",
+  },
+  {
+    name:    "Stevie Hallam",
+    role:    "Homeowner, Nottinghamshire",
+    text:    "",
+    rating:  5,
+    project: "Carpentry",
+  },
+  {
     name:    "Ryan Needham",
     role:    "Homeowner, Nottinghamshire",
     text:    "Had all my internal doors fitted — did a great job! Excellent service and reasonably priced.",
