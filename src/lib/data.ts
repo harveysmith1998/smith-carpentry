@@ -185,6 +185,13 @@ export const SERVICES = [
 
 export const TESTIMONIALS = [
   {
+    name:    "Jay Langthorpe",
+    role:    "Homeowner, Nottinghamshire",
+    text:    "We had Harvey supply and fit 4 interior doors and sort the panelling on our stairs. Absolutely fantastic job. I would not think about using anyone else. Very highly recommended.",
+    rating:  5,
+    project: "Interior Doors & Stair Panelling",
+  },
+  {
     name:    "Teo",
     role:    "Homeowner, Nottinghamshire",
     text:    "Amazing quality on my media wall installation, highly recommend to anyone who is thinking about getting one done. Couldn't recommend enough.",
