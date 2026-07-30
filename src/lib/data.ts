@@ -137,7 +137,8 @@ export const SERVICES = [
                   "/images/panelling/photo-3.jpg",
                   "/images/panelling/photo-4.jpg",
                   "/images/panelling/photo-5.jpg",
-                  "/images/panelling/photo-6.jpg"],
+                  "/images/panelling/photo-6.jpg",
+                  "/images/panelling/photo-12.jpg"],
     icon:        "🪟",
   },
   {
