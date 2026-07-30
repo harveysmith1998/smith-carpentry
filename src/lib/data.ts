@@ -185,6 +185,13 @@ export const SERVICES = [
 
 export const TESTIMONIALS = [
   {
+    name:    "Teo",
+    role:    "Homeowner, Nottinghamshire",
+    text:    "Amazing quality on my media wall installation, highly recommend to anyone who is thinking about getting one done. Couldn't recommend enough.",
+    rating:  5,
+    project: "Media Wall",
+  },
+  {
     name:    "Tommy Barwick",
     role:    "Homeowner, Nottinghamshire",
     text:    "I'm extremely pleased with the work carried out replacing all of our internal doors and fitting the new ironmongery. The workmanship was excellent, with great attention to detail and a high-quality finish throughout. Everything was completed to a very high standard, and our house was left clean and tidy each day.",
