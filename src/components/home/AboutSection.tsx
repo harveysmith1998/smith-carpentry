@@ -21,7 +21,7 @@ export default function AboutSection() {
         <div className="grid lg:grid-cols-2 gap-14 items-center">
           {/* Text */}
           <motion.div
-            initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0 }}
+            initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0 }} transition={{ duration: 0.7 }}
           >
             <span className="text-brand font-semibold text-sm uppercase tracking-widest mb-3 block">About Smith Carpentry</span>
@@ -38,7 +38,7 @@ export default function AboutSection() {
               {points.map((p, i) => (
                 <motion.div
                   key={p.text}
-                  initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0 }}
+                  initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0 }} transition={{ duration: 0.45, delay: i * 0.07 }}
                   className="flex items-center gap-3 p-4 rounded-xl bg-white/5 border border-white/10 hover:border-wood/40 transition-colors duration-200"
                 >
@@ -60,7 +60,7 @@ export default function AboutSection() {
 
           {/* Image */}
           <motion.div
-            initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0 }}
+            initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0 }} transition={{ duration: 0.7 }}
             className="relative"
           >

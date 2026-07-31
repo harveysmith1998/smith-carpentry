@@ -18,7 +18,7 @@ export default function RecentProjects() {
     <section className="section-padding bg-[#111111]">
       <div className="container mx-auto px-4 md:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0 }}
+          initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0 }} transition={{ duration: 0.6 }}
           className="flex flex-col md:flex-row items-start md:items-end justify-between gap-4 mb-12"
         >
@@ -37,7 +37,7 @@ export default function RecentProjects() {
           {recent.map((p, i) => (
             <motion.div
               key={p.title}
-              initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0 }}
+              initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0 }} transition={{ duration: 0.5, delay: i * 0.07 }}
               className={`group relative rounded-2xl overflow-hidden border border-white/10 hover:border-wood/40 transition-all duration-300 ${p.span ? "md:row-span-2" : ""}`}
               style={{ height: p.height }}

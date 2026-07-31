@@ -9,7 +9,7 @@ export default function AreasCovered() {
     <section className="section-padding bg-[#111111] border-y border-white/5">
       <div className="container mx-auto px-4 md:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0 }}
+          initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0 }} transition={{ duration: 0.6 }}
           className="text-center max-w-2xl mx-auto mb-12"
         >
@@ -27,7 +27,7 @@ export default function AreasCovered() {
           {AREAS.map((area, i) => (
             <motion.span
               key={area}
-              initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true, amount: 0 }}
+              initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true, amount: 0 }} transition={{ duration: 0.35, delay: i * 0.05 }}
               className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/5 border border-white/10 text-white/80 text-sm font-medium hover:border-wood/40 hover:text-wood transition-all duration-200"
             >
@@ -36,7 +36,7 @@ export default function AreasCovered() {
             </motion.span>
           ))}
           <motion.span
-            initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true, amount: 0 }}
+            initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true, amount: 0 }} transition={{ duration: 0.35, delay: AREAS.length * 0.05 }}
             className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-wood/10 border border-wood/40 text-wood text-sm font-semibold"
           >
