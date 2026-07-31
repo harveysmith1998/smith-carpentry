@@ -18,9 +18,9 @@ export default function ServiceDetail({ service }: { service: Service }) {
   return (
     <>
       {/* Hero */}
-      <section className="relative pt-32 pb-24 bg-charcoal-950 overflow-hidden">
+      <section className="relative pt-32 pb-20 bg-charcoal-950 overflow-hidden">
         <div className="absolute inset-0">
-          <Image src={service.image} alt={service.title} fill className="object-cover opacity-20" sizes="100vw" />
+          <Image src={service.image} alt={service.title} fill className="object-cover opacity-20" sizes="100vw" priority />
           <div className="absolute inset-0 bg-gradient-to-b from-charcoal-950/80 to-charcoal-950" />
         </div>
         <div className="relative container mx-auto px-4 md:px-8">
@@ -51,39 +51,62 @@ export default function ServiceDetail({ service }: { service: Service }) {
       </section>
 
       {/* Content */}
-      <section className="section-padding bg-white dark:bg-charcoal-950">
+      <section className="pt-8 pb-12 bg-white dark:bg-charcoal-950">
         <div className="container mx-auto px-4 md:px-8">
-          <div className="grid lg:grid-cols-3 gap-12">
+          <div className="grid lg:grid-cols-3 gap-8">
 
-            {/* Gallery */}
-            <div className="lg:col-span-2 space-y-5">
-              {service.video && (
-                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0 }} transition={{ duration: 0.6 }}
-                  className="flex justify-center">
-                  <div className="relative rounded-2xl overflow-hidden shadow-luxury bg-black w-full max-w-sm"
-                    style={{ aspectRatio: "9/16" }}>
-                    <video src={service.video} autoPlay muted loop playsInline
-                      className="w-full h-full object-cover" />
-                  </div>
-                </motion.div>
-              )}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {service.gallery.map((img, i) => (
-                  <div key={i}
-                    className={`img-zoom relative rounded-2xl overflow-hidden shadow-card ${i === 0 ? "md:col-span-2 h-72" : "h-52"}`}
+            {/* Media: video + gallery */}
+            <div className="lg:col-span-2">
+              <div className="grid grid-cols-2 gap-3">
+
+                {/* Video cell — cover image shows until video plays */}
+                {service.video && (
+                  <div
+                    className="col-span-2 relative rounded-2xl overflow-hidden"
+                    style={{
+                      height: "320px",
+                      backgroundImage: `url(${service.image})`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                    }}
                   >
-                    <Image src={img} alt={`${service.title} project ${i + 1}`} fill className="object-cover"
-                      sizes="(max-width:768px) 100vw,50vw"
-                      loading={i === 0 ? "eager" : "lazy"}
-                      quality={75} />
+                    <video
+                      src={service.video}
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      className="absolute inset-0 w-full h-full object-cover opacity-0"
+                      onPlay={(e) => { (e.currentTarget as HTMLVideoElement).style.opacity = "1"; }}
+                    />
+                  </div>
+                )}
+
+                {/* Gallery images */}
+                {service.gallery.map((img, i) => (
+                  <div
+                    key={i}
+                    className={`img-zoom relative rounded-2xl overflow-hidden ${
+                      i === 0 && !service.video ? "col-span-2" : ""
+                    }`}
+                    style={{ height: i === 0 && !service.video ? "320px" : "200px" }}
+                  >
+                    <Image
+                      src={img}
+                      alt={`${service.title} project ${i + 1}`}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width:768px) 100vw, 50vw"
+                      loading="eager"
+                      quality={80}
+                    />
                   </div>
                 ))}
               </div>
             </div>
 
             {/* Sidebar */}
-            <div className="space-y-6">
+            <div className="space-y-5">
               {/* Features */}
               <div className="bg-[#F5F5F5] dark:bg-charcoal-900 rounded-2xl p-6">
                 <h3 className="font-display font-bold text-charcoal-950 dark:text-white text-xl mb-4">What&apos;s Included</h3>
@@ -127,27 +150,24 @@ export default function ServiceDetail({ service }: { service: Service }) {
       </section>
 
       {/* Related services */}
-      <section className="section-padding bg-[#F5F5F5] dark:bg-charcoal-900">
+      <section className="py-12 bg-[#F5F5F5] dark:bg-charcoal-900">
         <div className="container mx-auto px-4 md:px-8">
-          <h2 className="text-2xl md:text-3xl font-display font-bold text-charcoal-950 dark:text-white mb-8">Related Services</h2>
+          <h2 className="text-2xl md:text-3xl font-display font-bold text-charcoal-950 dark:text-white mb-6">Related Services</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {related.map((s, i) => (
-              <div key={s.slug}>
-                <Link href={`/services/${s.slug}`}
-                  className="group block bg-white dark:bg-charcoal-950 rounded-2xl overflow-hidden shadow-card hover:shadow-card-hover hover:-translate-y-1 transition-all duration-300">
-                  <div className="img-zoom relative h-40">
-                    <Image src={s.image} alt={s.title} fill className="object-cover"
-                      sizes="(max-width:768px) 100vw,33vw" />
+            {related.map((s) => (
+              <Link key={s.slug} href={`/services/${s.slug}`}
+                className="group block bg-white dark:bg-charcoal-950 rounded-2xl overflow-hidden shadow-card hover:shadow-card-hover hover:-translate-y-1 transition-all duration-300">
+                <div className="img-zoom relative h-40">
+                  <Image src={s.image} alt={s.title} fill className="object-cover" sizes="(max-width:768px) 100vw,33vw" />
+                </div>
+                <div className="p-5">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-xl">{s.icon}</span>
+                    <h3 className="font-bold text-charcoal-950 dark:text-white group-hover:text-brand transition-colors">{s.title}</h3>
                   </div>
-                  <div className="p-5">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="text-xl">{s.icon}</span>
-                      <h3 className="font-bold text-charcoal-950 dark:text-white group-hover:text-brand transition-colors">{s.title}</h3>
-                    </div>
-                    <p className="text-charcoal-500 dark:text-white/50 text-xs leading-relaxed line-clamp-2">{s.shortDesc}</p>
-                  </div>
-                </Link>
-              </div>
+                  <p className="text-charcoal-500 dark:text-white/50 text-xs leading-relaxed line-clamp-2">{s.shortDesc}</p>
+                </div>
+              </Link>
             ))}
           </div>
         </div>
