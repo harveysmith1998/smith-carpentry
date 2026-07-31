@@ -17,7 +17,7 @@ export default function ServicesPage() {
           <div className="absolute inset-0 bg-gradient-to-b from-charcoal-950/70 to-charcoal-950" />
         </div>
         <div className="relative container mx-auto px-4 md:px-8 text-center">
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <span className="text-brand text-sm font-semibold uppercase tracking-widest mb-4 block">What We Offer</span>
             <h1 className="text-4xl md:text-6xl font-display font-bold text-white mb-6">
               Our <span className="gradient-text">Services</span>
@@ -37,8 +37,8 @@ export default function ServicesPage() {
             {SERVICES.map((svc, i) => (
               <motion.div
                 key={svc.slug}
-                initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.05 }}
+                initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: i * 0.08 }}
                 id={svc.slug}
                 className={`grid lg:grid-cols-2 gap-12 items-center ${i % 2 === 1 ? "lg:grid-flow-col-dense" : ""}`}
               >
