@@ -186,6 +186,20 @@ export const SERVICES = [
 
 export const TESTIMONIALS = [
   {
+    name:    "Elliott Gilbert",
+    role:    "Homeowner, Nottinghamshire",
+    text:    "Really is the best in the business! Great guy with a great eye for detail, helped redesign our kitchen to improve the layout and give us more space we needed, also installing bespoke additional understairs storage that works a dream. Always punctual, fair prices and a nice guy.",
+    rating:  5,
+    project: "Kitchen Redesign & Understairs Storage",
+  },
+  {
+    name:    "Prash Gor",
+    role:    "Homeowner, Nottinghamshire",
+    text:    "Harvey always does a great job for us in Alfreton — wood floor and LVT installation, skirting, hanging doors and kitchen fitting. He works hard and cares about getting the perfect finish. Recommended to various people and they've all said the same.",
+    rating:  5,
+    project: "Flooring, Doors & Kitchen",
+  },
+  {
     name:    "Eden Hayes",
     role:    "Homeowner, Nottinghamshire",
     text:    "",
