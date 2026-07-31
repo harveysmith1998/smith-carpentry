@@ -70,14 +70,14 @@ export default function ServiceDetail({ service }: { service: Service }) {
               )}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {service.gallery.map((img, i) => (
-                  <motion.div key={i}
-                    initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0 }} transition={{ duration: 0.5, delay: i * 0.1 }}
+                  <div key={i}
                     className={`img-zoom relative rounded-2xl overflow-hidden shadow-card ${i === 0 ? "md:col-span-2 h-72" : "h-52"}`}
                   >
                     <Image src={img} alt={`${service.title} project ${i + 1}`} fill className="object-cover"
-                      sizes="(max-width:768px) 100vw,50vw" />
-                  </motion.div>
+                      sizes="(max-width:768px) 100vw,50vw"
+                      loading={i === 0 ? "eager" : "lazy"}
+                      quality={75} />
+                  </div>
                 ))}
               </div>
             </div>
@@ -132,10 +132,7 @@ export default function ServiceDetail({ service }: { service: Service }) {
           <h2 className="text-2xl md:text-3xl font-display font-bold text-charcoal-950 dark:text-white mb-8">Related Services</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {related.map((s, i) => (
-              <motion.div key={s.slug}
-                initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0 }} transition={{ duration: 0.5, delay: i * 0.1 }}
-              >
+              <div key={s.slug}>
                 <Link href={`/services/${s.slug}`}
                   className="group block bg-white dark:bg-charcoal-950 rounded-2xl overflow-hidden shadow-card hover:shadow-card-hover hover:-translate-y-1 transition-all duration-300">
                   <div className="img-zoom relative h-40">
@@ -150,7 +147,7 @@ export default function ServiceDetail({ service }: { service: Service }) {
                     <p className="text-charcoal-500 dark:text-white/50 text-xs leading-relaxed line-clamp-2">{s.shortDesc}</p>
                   </div>
                 </Link>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
