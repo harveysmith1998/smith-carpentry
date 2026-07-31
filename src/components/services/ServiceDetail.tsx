@@ -61,8 +61,8 @@ export default function ServiceDetail({ service }: { service: Service }) {
                 {service.gallery.map((img, i) => (
                   <motion.div key={i}
                     initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }}
-                    className={`img-zoom rounded-2xl overflow-hidden shadow-card ${i === 0 ? "md:col-span-2 h-72" : "h-52"}`}
+                    viewport={{ once: true, amount: 0 }} transition={{ duration: 0.5, delay: i * 0.1 }}
+                    className={`img-zoom relative rounded-2xl overflow-hidden shadow-card ${i === 0 ? "md:col-span-2 h-72" : "h-52"}`}
                   >
                     <Image src={img} alt={`${service.title} project ${i + 1}`} fill className="object-cover"
                       sizes="(max-width:768px) 100vw,50vw" />
@@ -123,7 +123,7 @@ export default function ServiceDetail({ service }: { service: Service }) {
             {related.map((s, i) => (
               <motion.div key={s.slug}
                 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }}
+                viewport={{ once: true, amount: 0 }} transition={{ duration: 0.5, delay: i * 0.1 }}
               >
                 <Link href={`/services/${s.slug}`}
                   className="group block bg-white dark:bg-charcoal-950 rounded-2xl overflow-hidden shadow-card hover:shadow-card-hover hover:-translate-y-1 transition-all duration-300">
