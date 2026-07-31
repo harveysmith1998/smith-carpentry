@@ -48,6 +48,7 @@ export const SERVICES = [
                   "/images/shopfitting/photo-4.jpg",
                   "/images/shopfitting/photo-5.jpg",
                   "/images/shopfitting/photo-6.jpg"],
+    video:       "/videos/shopfitting.mov",
     icon:        "🏪",
   },
   {

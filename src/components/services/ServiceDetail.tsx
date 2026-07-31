@@ -9,7 +9,7 @@ import { Star } from "lucide-react";
 
 interface Service {
   slug: string; title: string; shortDesc: string; description: string;
-  features: string[]; image: string; gallery: string[]; icon: string;
+  features: string[]; image: string; gallery: string[]; icon: string; video?: string;
 }
 
 export default function ServiceDetail({ service }: { service: Service }) {
@@ -57,6 +57,17 @@ export default function ServiceDetail({ service }: { service: Service }) {
 
             {/* Gallery */}
             <div className="lg:col-span-2 space-y-5">
+              {service.video && (
+                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0 }} transition={{ duration: 0.6 }}
+                  className="flex justify-center">
+                  <div className="relative rounded-2xl overflow-hidden shadow-luxury bg-black w-full max-w-sm"
+                    style={{ aspectRatio: "9/16" }}>
+                    <video src={service.video} autoPlay muted loop playsInline
+                      className="w-full h-full object-cover" />
+                  </div>
+                </motion.div>
+              )}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {service.gallery.map((img, i) => (
                   <motion.div key={i}
