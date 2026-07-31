@@ -29,8 +29,9 @@ export const STATS = [
 ];
 
 export const AREAS = [
-  "Nottingham", "Mansfield", "Sutton-in-Ashfield", "Newark",
-  "West Bridgford", "Arnold", "Worksop", "Chesterfield",
+  "Nottingham", "Mansfield", "Sutton-in-Ashfield", "Kirkby-in-Ashfield",
+  "Hucknall", "Arnold", "West Bridgford", "Newark",
+  "Worksop", "Beeston", "Eastwood", "Heanor",
 ];
 
 export const SERVICES = [
@@ -353,7 +354,7 @@ export const WHY_CHOOSE_US = [
 export const FAQS = [
   {
     question: "What areas do you cover?",
-    answer:   "We are based in Nottinghamshire and cover Nottingham, Mansfield, Sutton-in-Ashfield, Newark, West Bridgford, Arnold, Worksop, Chesterfield and all surrounding areas.",
+    answer:   "We are based in Sutton-in-Ashfield and cover the whole of Nottinghamshire including Nottingham, Mansfield, Kirkby-in-Ashfield, Hucknall, Arnold, West Bridgford, Newark, Worksop, Beeston, Eastwood and all surrounding areas.",
   },
   {
     question: "How do I get a quote?",

@@ -11,9 +11,9 @@ import ContactCTA from "@/components/home/ContactCTA";
 import VideoSection from "@/components/home/VideoSection";
 
 export const metadata: Metadata = {
-  title: "Smith Carpentry | Bespoke Carpentry Nottinghamshire",
+  title: "Smith Carpentry | Carpenter Nottingham & Nottinghamshire",
   description:
-    "Trusted qualified carpenter with over 10 years of experience in Nottinghamshire. Bespoke joinery, kitchens, staircases, wardrobes, garden rooms & commercial fit-outs.",
+    "Local carpenter based in Sutton-in-Ashfield covering Nottingham, Mansfield, Kirkby-in-Ashfield & all of Nottinghamshire. Bespoke joinery, kitchens, wardrobes, staircases & commercial fit-outs.",
 };
 
 export default function HomePage() {
