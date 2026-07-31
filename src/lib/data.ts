@@ -186,6 +186,13 @@ export const SERVICES = [
 
 export const TESTIMONIALS = [
   {
+    name:    "Eden Hayes",
+    role:    "Homeowner, Nottinghamshire",
+    text:    "",
+    rating:  5,
+    project: "Floor Fitting",
+  },
+  {
     name:    "Jay Langthorpe",
     role:    "Homeowner, Nottinghamshire",
     text:    "We had Harvey supply and fit 4 interior doors and sort the panelling on our stairs. Absolutely fantastic job. I would not think about using anyone else. Very highly recommended.",
