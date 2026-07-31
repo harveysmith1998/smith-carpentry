@@ -98,7 +98,7 @@ export default function ServicesPage() {
       {/* CTA */}
       <section className="py-20 bg-charcoal-950 border-t border-white/5">
         <div className="container mx-auto px-4 md:px-8 text-center">
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0 }}>
             <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-4">
               Can&apos;t See What You Need?
             </h2>

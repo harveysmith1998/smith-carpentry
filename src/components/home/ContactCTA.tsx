@@ -15,8 +15,8 @@ export default function ContactCTA() {
 
       <div className="relative container mx-auto px-4 md:px-8 text-center">
         <motion.div
-          initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }} transition={{ duration: 0.7 }}
+          initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0 }}
+          viewport={{ once: true, amount: 0 }} transition={{ duration: 0.7 }}
         >
           <span className="text-brand font-semibold text-sm uppercase tracking-widest mb-4 block">Start Your Project</span>
           <h2 className="text-4xl md:text-6xl font-display font-bold text-white mb-6">

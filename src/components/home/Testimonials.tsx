@@ -17,8 +17,8 @@ export default function Testimonials() {
     <section className="section-padding bg-[#0a0a0a] overflow-hidden">
       <div className="container mx-auto px-4 md:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }} transition={{ duration: 0.6 }}
+          initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0 }}
+          viewport={{ once: true, amount: 0 }} transition={{ duration: 0.6 }}
           className="text-center max-w-xl mx-auto mb-14"
         >
           <span className="text-wood font-semibold text-sm uppercase tracking-widest mb-3 block">Client Reviews</span>
@@ -86,8 +86,8 @@ export default function Testimonials() {
           {TESTIMONIALS.slice(0, 3).map((t, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }}
+              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0 }}
+              viewport={{ once: true, amount: 0 }} transition={{ duration: 0.5, delay: i * 0.1 }}
               className="bg-white/5 border border-white/10 rounded-xl p-5 hover:border-wood/30 transition-colors"
             >
               <div className="flex gap-0.5 mb-3">{[...Array(5)].map((_, j) => <Star key={j} size={11} className="text-wood fill-wood" />)}</div>

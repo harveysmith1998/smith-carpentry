@@ -21,8 +21,8 @@ export default function AboutSection() {
         <div className="grid lg:grid-cols-2 gap-14 items-center">
           {/* Text */}
           <motion.div
-            initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }} transition={{ duration: 0.7 }}
+            initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0 }}
+            viewport={{ once: true, amount: 0 }} transition={{ duration: 0.7 }}
           >
             <span className="text-brand font-semibold text-sm uppercase tracking-widest mb-3 block">About Smith Carpentry</span>
             <h2 className="text-3xl md:text-5xl font-display font-bold text-white mb-6">
@@ -38,8 +38,8 @@ export default function AboutSection() {
               {points.map((p, i) => (
                 <motion.div
                   key={p.text}
-                  initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }} transition={{ duration: 0.45, delay: i * 0.07 }}
+                  initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0 }}
+                  viewport={{ once: true, amount: 0 }} transition={{ duration: 0.45, delay: i * 0.07 }}
                   className="flex items-center gap-3 p-4 rounded-xl bg-white/5 border border-white/10 hover:border-wood/40 transition-colors duration-200"
                 >
                   <span className="w-9 h-9 rounded-lg bg-brand/10 text-brand flex items-center justify-center shrink-0">
@@ -60,8 +60,8 @@ export default function AboutSection() {
 
           {/* Image */}
           <motion.div
-            initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }} transition={{ duration: 0.7 }}
+            initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0 }}
+            viewport={{ once: true, amount: 0 }} transition={{ duration: 0.7 }}
             className="relative"
           >
             <div className="rounded-2xl overflow-hidden shadow-luxury border border-white/10">

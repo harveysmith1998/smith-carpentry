@@ -15,8 +15,8 @@ export default function FeaturedServices() {
 
         <motion.div
           initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0 }}
+          viewport={{ once: true, amount: 0 }}
           transition={{ duration: 0.6 }}
           className="text-center max-w-2xl mx-auto mb-14"
         >
@@ -34,8 +34,8 @@ export default function FeaturedServices() {
             <motion.div
               key={svc.slug}
               initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0 }}
+              viewport={{ once: true, amount: 0 }}
               transition={{ duration: 0.5, delay: i * 0.09 }}
             >
               <Link
@@ -72,7 +72,7 @@ export default function FeaturedServices() {
         </div>
 
         <motion.div
-          initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+          initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true, amount: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
           className="text-center mt-12"
         >

@@ -14,8 +14,8 @@ export default function WhyChooseUs() {
 
           {/* Image */}
           <motion.div
-            initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }} transition={{ duration: 0.7 }}
+            initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0 }}
+            viewport={{ once: true, amount: 0 }} transition={{ duration: 0.7 }}
             className="relative"
           >
             <div className="rounded-2xl overflow-hidden shadow-luxury">
@@ -45,8 +45,8 @@ export default function WhyChooseUs() {
 
           {/* Content */}
           <motion.div
-            initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }} transition={{ duration: 0.7 }}
+            initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0 }}
+            viewport={{ once: true, amount: 0 }} transition={{ duration: 0.7 }}
           >
             <span className="text-brand font-semibold text-sm uppercase tracking-widest mb-3 block">
               Why Smith Carpentry
@@ -63,8 +63,8 @@ export default function WhyChooseUs() {
               {WHY_CHOOSE_US.map((item, i) => (
                 <motion.div
                   key={item.title}
-                  initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }} transition={{ duration: 0.45, delay: i * 0.07 }}
+                  initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0 }}
+                  viewport={{ once: true, amount: 0 }} transition={{ duration: 0.45, delay: i * 0.07 }}
                   className="flex gap-3 p-4 rounded-xl bg-[#F5F5F5] dark:bg-charcoal-900 hover:bg-brand/8 dark:hover:bg-brand/10 transition-colors duration-200 group"
                 >
                   <span className="text-xl shrink-0 mt-0.5">{item.icon}</span>
