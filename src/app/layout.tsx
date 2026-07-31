@@ -51,11 +51,11 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Smith Carpentry" }],
   creator: "Smith Carpentry",
-  metadataBase: new URL("https://www.smithcarpentry.uk"),
+  metadataBase: new URL("https://smithcarpentry.uk"),
   openGraph: {
     type: "website",
     locale: "en_GB",
-    url: "https://www.smithcarpentry.uk",
+    url: "https://smithcarpentry.uk",
     siteName: "Smith Carpentry",
     title: "Smith Carpentry | Carpenter Nottingham & Nottinghamshire",
     description:
@@ -93,8 +93,8 @@ const jsonLd = {
   name: "Smith Carpentry",
   description:
     "Trusted qualified carpenter with over 10 years of experience in Nottinghamshire. Bespoke joinery, kitchens, staircases, wardrobes, garden rooms & commercial fit-outs.",
-  image: "https://www.smithcarpentry.uk/images/logo.jpg",
-  url: "https://www.smithcarpentry.uk",
+  image: "https://smithcarpentry.uk/images/logo.jpg",
+  url: "https://smithcarpentry.uk",
   telephone: COMPANY.phone,
   email: COMPANY.email,
   priceRange: "££",
