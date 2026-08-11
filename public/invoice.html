@@ -1029,7 +1029,10 @@ inv.fromPhone;
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(9);
     doc.setTextColor(180,185,185);
-    doc.text('Smith Carpentry   |   ' + inv.fromPhone + '   |   ' + inv.fromEmail + '   |   Nottingham, UK', pageWidth / 2, pageHeight - 15, { align: 'center' });
+    doc.text('Smith Carpentry   |   ' + inv.fromPhone + '   |   ' + inv.fromEmail + '   |   Nottingham, UK', pageWidth / 2, pageHeight - 22, { align: 'center' });
+    doc.setFontSize(8);
+    doc.setTextColor(0, 200, 200);
+    doc.textWithLink('⭐ Happy with the work? Leave us a Google review — tap here', pageWidth / 2, pageHeight - 10, { align: 'center', url: 'https://g.page/r/CbI8a2yoeQHhEBM/review' });
 
     const filename = 'Invoice-INV-' + (document.getElementById('invoiceNo').value || '001') + '.pdf';
     doc.save(filename);
