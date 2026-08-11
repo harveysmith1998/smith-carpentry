@@ -267,7 +267,6 @@ td.del-cell { width: 32px; text-align: center; }
 
 @media print {
   .action-bar, .del-btn, .add-row-wrap, .tabs { display: none !important; }
-  .notes-block textarea { height: auto !important; overflow: visible !important; min-height: 0 !important; }
   .tab-panel { display: block !important; }
   .log-panel, .email-panel { display: none !important; }
   body { background: #fff !important; color: #111 !important; padding: 0 !important; }
@@ -278,6 +277,24 @@ td.del-cell { width: 32px; text-align: center; }
     --teal: #009090; --teal-dim: #999;
     --line: #ddd; --text: #111; --muted: #555;
   }
+
+  /* Notes/scope of works: let it flow freely across pages */
+  .notes-block { page-break-before: auto; break-before: auto; }
+  .notes-block textarea {
+    height: auto !important;
+    overflow: visible !important;
+    min-height: 0 !important;
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
+    page-break-inside: auto !important;
+    break-inside: auto !important;
+  }
+
+  /* Keep items table together as much as possible but allow breaks between rows */
+  tr { page-break-inside: avoid; break-inside: avoid; }
+
+  /* Footer always at bottom */
+  .quote-footer { page-break-before: auto; break-before: auto; }
 }
 
   /* iOS Safari: prevent auto-zoom on focus */
