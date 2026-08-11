@@ -283,6 +283,22 @@ td.del-cell { width: 32px; text-align: center; }
   input, textarea, select { font-size: 16px !important; }
 
   body { padding-bottom: env(safe-area-inset-bottom); }
+
+  /* Description textarea */
+  tbody td textarea.i-desc {
+    width: 100%; resize: none; font: inherit; background: transparent;
+    border: none; padding: 6px 4px; color: inherit; outline: none;
+    overflow: hidden; line-height: 1.5;
+  }
+  @media print {
+    tbody td textarea.i-desc {
+      white-space: pre-wrap !important;
+      word-wrap: break-word !important;
+      overflow: visible !important;
+      height: auto !important;
+      resize: none;
+    }
+  }
 </style>
 </head>
 <body>
@@ -493,12 +509,25 @@ function recalc() {
   save();
 }
 
+
+function autoResizeDesc(el) {
+  el.style.height = 'auto';
+  el.style.height = el.scrollHeight + 'px';
+}
+// Before printing, expand all description textareas to full content height
+window.addEventListener('beforeprint', function() {
+  document.querySelectorAll('.i-desc').forEach(function(el) {
+    el.style.height = 'auto';
+    el.style.height = el.scrollHeight + 'px';
+  });
+});
+
 function addRow(desc='', qty='', unit='') {
   const tbody = document.getElementById('items-body');
   const tr = document.createElement('tr');
   tr.className = 'item-row';
   tr.innerHTML = `
-    <td class="col-desc"><input class="i-desc" type="text" placeholder="Description of work or materials" value="${esc(desc)}" oninput="save()"></td>
+    <td class="col-desc"><textarea class="i-desc" rows="2" placeholder="Description of work or materials" oninput="save();autoResizeDesc(this)"></textarea></td>
     <td class="col-qty"><input class="i-qty num" type="number" min="0" step="any" placeholder="1" value="${esc(qty)}" oninput="recalc()"></td>
     <td class="col-unit"><input class="i-unit num" type="number" min="0" step="0.01" placeholder="0.00" value="${esc(unit)}" oninput="recalc()"></td>
     <td class="col-tot total-cell i-tot">£0.00</td>
