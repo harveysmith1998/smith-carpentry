@@ -784,5 +784,64 @@ function clearAll() {
   autoResize(notesEl);
 })();
 </script>
+<script>
+// Cloud sync — only runs on smithcarpentry.uk, not local files
+(function() {
+  const ONLINE = location.hostname === 'smithcarpentry.uk';
+  if (!ONLINE) return;
+
+  function cloudGet(key, cb) {
+    fetch('/api/sync?key=' + key)
+      .then(function(r) { return r.json(); })
+      .then(function(res) { cb(res.data || []); })
+      .catch(function() { cb([]); });
+  }
+
+  function cloudSet(key, data) {
+    fetch('/api/sync', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ key: key, data: data })
+    }).catch(function(){});
+  }
+
+  // On load: pull cloud log and merge into localStorage (cloud wins for new entries)
+  const LOG_KEY = document.getElementById('qt-list') !== null || document.getElementById('addItemBtn') !== null
+    ? (document.getElementById('addItemBtn') ? 'sc_invoice_log' : 'sc_quote_log')
+    : 'sc_quote_log';
+
+  // Detect which template we're on
+  const IS_INVOICE = !!document.getElementById('invoiceNo');
+  const logKey = IS_INVOICE ? 'sc_invoice_log' : 'sc_quote_log';
+
+  cloudGet(logKey, function(cloudLog) {
+    if (!Array.isArray(cloudLog) || !cloudLog.length) return;
+    let local = [];
+    try { local = JSON.parse(localStorage.getItem(logKey) || '[]'); } catch(e) {}
+    // Merge: combine both, dedupe by ref, keep most recently saved
+    const merged = {};
+    cloudLog.concat(local).forEach(function(e) {
+      if (!e || !e.ref) return;
+      if (!merged[e.ref] || (e.saved && e.saved > (merged[e.ref].saved||''))) {
+        merged[e.ref] = e;
+      }
+    });
+    const result = Object.values(merged).sort(function(a,b) {
+      return (b.saved||'') > (a.saved||'') ? 1 : -1;
+    });
+    try { localStorage.setItem(logKey, JSON.stringify(result)); } catch(e) {}
+    if (typeof renderLog === 'function') renderLog();
+  });
+
+  // Patch saveLog / saveInvoiceLog to also push to cloud
+  const origSetItem = localStorage.setItem.bind(localStorage);
+  localStorage.setItem = function(key, value) {
+    origSetItem(key, value);
+    if (key === 'sc_quote_log' || key === 'sc_invoice_log') {
+      try { cloudSet(key, JSON.parse(value)); } catch(e) {}
+    }
+  };
+})();
+</script>
 </body>
 </html>

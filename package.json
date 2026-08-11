@@ -12,6 +12,7 @@
     "@fontsource/inter": "^5.2.8",
     "@fontsource/playfair-display": "^5.2.8",
     "@next/bundle-analyzer": "^16.2.9",
+    "@upstash/redis": "^1.38.2",
     "clsx": "^2.1.1",
     "framer-motion": "^12.42.2",
     "lucide-react": "^1.22.0",
