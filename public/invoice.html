@@ -619,6 +619,19 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
 
   /* iOS Safari: prevent auto-zoom on focus */
   input, textarea, select { font-size: 16px !important; }
+
+  /* Import from Quote modal */
+  .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:1000; align-items:center; justify-content:center; }
+  .modal-overlay.open { display:flex; }
+  .modal-box { background:var(--card); border:1.5px solid var(--teal); border-radius:12px; padding:20px; width:90%; max-width:420px; max-height:80vh; overflow-y:auto; }
+  .modal-box h3 { color:var(--teal); font-size:14px; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:14px; }
+  .qt-row { padding:10px 12px; border-radius:8px; margin-bottom:8px; background:var(--card2); cursor:pointer; border:1.5px solid transparent; }
+  .qt-row:hover { border-color:var(--teal); }
+  .qt-ref { font-weight:800; color:var(--teal); font-size:14px; }
+  .qt-client { font-size:13px; color:var(--text); margin-top:2px; }
+  .qt-meta { font-size:11px; color:var(--muted); margin-top:2px; }
+  .modal-cancel { width:100%; margin-top:12px; background:transparent; border:1.5px solid var(--muted); color:var(--muted); border-radius:8px; padding:10px; font-family:inherit; font-size:13px; cursor:pointer; }
+  .import-btn { width:100%; background:var(--teal); color:#0a1010; font-weight:800; font-family:inherit; font-size:13px; letter-spacing:0.06em; text-transform:uppercase; border:none; border-radius:8px; padding:13px; cursor:pointer; margin-bottom:10px; }
 </style>
 </head>
 <body>
@@ -668,7 +681,7 @@ Sort Code: 55-61-17</textarea>
   </div>
 
   <div class="card">
-    <h2>Bill To</h2>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2px"><h2 style="margin-bottom:0">Bill To</h2><button type="button" class="import-btn" style="width:auto;padding:8px 14px;margin:0;font-size:11px" onclick="openImportModal()">⬇ Import from Quote</button></div>
     <label>Client Name</label>
     <input type="text" id="clientName" placeholder="① Client name">
     <label>Client Email (invoice sends here)</label>
@@ -1123,5 +1136,14 @@ inv.fromPhone;
   }
 </script>
 
+
+<!-- Import from Quote modal -->
+<div class="modal-overlay" id="importModal">
+  <div class="modal-box">
+    <h3>Import from Quote</h3>
+    <div id="qt-list">No saved quotes found.</div>
+    <button class="modal-cancel" onclick="document.getElementById('importModal').classList.remove('open')">Cancel</button>
+  </div>
+</div>
 </body>
 </html>

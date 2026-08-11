@@ -678,12 +678,31 @@ function saveLog(log) {
 }
 function logCurrentQuote() {
   const log = getLog();
+  // Collect full line items for invoice import
+  const rows = [];
+  document.querySelectorAll('#items-body tr').forEach(function(row) {
+    rows.push([
+      row.querySelector('.i-desc') ? row.querySelector('.i-desc').value : '',
+      row.querySelector('.i-qty')  ? row.querySelector('.i-qty').value  : '',
+      row.querySelector('.i-unit') ? row.querySelector('.i-unit').value : ''
+    ]);
+  });
+  const clientLines = (document.getElementById('client-name').value || '').split('\n');
   const entry = {
     ref:    'QT-' + (document.getElementById('quote-ref-num').value || '001'),
-    client: (document.getElementById('client-name').value || '').split('\n')[0].trim(),
+    client: clientLines[0].trim(),
     total:  document.getElementById('grand-total').textContent,
     date:   document.getElementById('quote-date').value || fmt(new Date()),
-    saved:  fmt(new Date())
+    saved:  fmt(new Date()),
+    // Full data for invoice import
+    clientFull:  document.getElementById('client-name').value || '',
+    clientEmail: document.getElementById('client-email').value || '',
+    items: rows,
+    deposit: document.getElementById('deposit-toggle').checked ? {
+      on:   true,
+      type: document.getElementById('deposit-type').value,
+      val:  document.getElementById('deposit-value').value
+    } : { on: false }
   };
   const existing = log.findIndex(e => e.ref === entry.ref);
   if (existing >= 0) log[existing] = entry; else log.unshift(entry);
