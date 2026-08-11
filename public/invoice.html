@@ -1134,6 +1134,63 @@ inv.fromPhone;
     localStorage.removeItem('sc_invoice_log');
     renderLog();
   }
+
+  function openImportModal() {
+    let log = [];
+    try { log = JSON.parse(localStorage.getItem('sc_quote_log') || '[]'); } catch(e) {}
+    const el = document.getElementById('qt-list');
+    if (!log.length) {
+      el.innerHTML = '<p style="color:var(--muted);font-size:13px;padding:8px 0">No saved quotes found. Save a quote first from the Quote template.</p>';
+    } else {
+      el.innerHTML = log.map(function(q, i) {
+        return '<div class="qt-row" onclick="importQuote(' + i + ')">' +
+          '<div class="qt-ref">' + (q.ref||'—') + '</div>' +
+          '<div class="qt-client">' + (q.client||'—') + '</div>' +
+          '<div class="qt-meta">' + (q.total||'') + ' &nbsp;·&nbsp; Quoted ' + (q.date||'') + '</div>' +
+          '</div>';
+      }).join('');
+    }
+    document.getElementById('importModal').classList.add('open');
+  }
+
+  function importQuote(i) {
+    let log = [];
+    try { log = JSON.parse(localStorage.getItem('sc_quote_log') || '[]'); } catch(e) {}
+    const q = log[i];
+    if (!q) return;
+
+    // Fill client details
+    if (q.clientFull) {
+      const lines = q.clientFull.split('\n');
+      document.getElementById('clientName').value  = lines[0].trim();
+      document.getElementById('siteAddress').value = lines.slice(1).join('\n').trim();
+    }
+    if (q.clientEmail) document.getElementById('clientEmail').value = q.clientEmail;
+
+    // Fill line items
+    if (q.items && q.items.length) {
+      document.getElementById('itemsList').innerHTML = '';
+      itemCount = 0;
+      q.items.forEach(function(item) {
+        if (!item[0] && !item[2]) return;
+        addItem();
+        const id = itemCount;
+        const descEl  = document.getElementById('desc-'  + id);
+        const qtyEl   = document.getElementById('qty-'   + id);
+        const priceEl = document.getElementById('price-' + id);
+        if (descEl)  descEl.value  = item[0] || '';
+        if (qtyEl)   qtyEl.value   = item[1] || 1;
+        if (priceEl) priceEl.value = item[2] || 0;
+      });
+      calcTotals();
+    }
+
+    // Add quote ref to notes
+    const notesEl = document.getElementById('notes');
+    if (notesEl && q.ref) notesEl.value = 'Re: Quote ' + q.ref;
+
+    document.getElementById('importModal').classList.remove('open');
+  }
 </script>
 
 
