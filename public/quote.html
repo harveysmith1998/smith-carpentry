@@ -300,6 +300,19 @@ td.del-cell { width: 32px; text-align: center; }
       resize: none;
     }
   }
+
+  /* Deposit section */
+  .deposit-toggle-row { display:flex; align-items:center; gap:8px; margin-top:10px; padding-top:10px; border-top:1px solid var(--line); font-size:13px; }
+  .deposit-controls { margin-top:8px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  .deposit-controls select, .deposit-controls input {
+    background: var(--card); border:1.5px solid var(--border); color:var(--text);
+    border-radius:6px; padding:6px 8px; font-size:14px; font-family:inherit;
+  }
+  .deposit-controls select { cursor:pointer; }
+  .deposit-controls input[type=number] { width:90px; }
+  .totals-row.deposit-row { color: var(--teal); }
+  .totals-row.balance-row { border-top:1px solid var(--line); margin-top:4px; padding-top:6px; }
+  .totals-row.balance-row .t-lbl, .totals-row.balance-row .t-val { font-weight:700; }
 </style>
 </head>
 <body>
@@ -378,6 +391,25 @@ td.del-cell { width: 32px; text-align: center; }
     <span class="t-lbl">Total</span>
     <span class="t-val" id="grand-total">£0.00</span>
   </div>
+  <div class="vat-toggle-row deposit-toggle-row">
+    <input type="checkbox" id="deposit-toggle" onchange="recalc()">
+    <label for="deposit-toggle">Include Deposit</label>
+  </div>
+  <div id="deposit-controls" class="deposit-controls" style="display:none">
+    <select id="deposit-type" onchange="recalc()">
+      <option value="pct">Percentage %</option>
+      <option value="fixed">Fixed Amount £</option>
+    </select>
+    <input type="number" id="deposit-value" min="0" step="any" placeholder="e.g. 30" value="30" oninput="recalc()">
+  </div>
+  <div class="totals-row deposit-row" id="deposit-row" style="display:none">
+    <span class="t-lbl" id="deposit-lbl">Deposit (30%)</span>
+    <span class="t-val" id="deposit-amt">£0.00</span>
+  </div>
+  <div class="totals-row balance-row" id="balance-row" style="display:none">
+    <span class="t-lbl">Balance on Completion</span>
+    <span class="t-val" id="balance-amt">£0.00</span>
+  </div>
 </div>
 
 <div class="notes-block">
@@ -444,7 +476,13 @@ function getClientFirstName() {
 }
 
 function getGrandTotal() {
-  return document.getElementById('grand-total').textContent || '£0.00';
+  const gt = document.getElementById('grand-total').textContent || '£0.00';
+  const depOn = document.getElementById('deposit-toggle').checked;
+  if (!depOn) return gt;
+  const dep = document.getElementById('deposit-amt').textContent || '£0.00';
+  const bal = document.getElementById('balance-amt').textContent || '£0.00';
+  const lbl = document.getElementById('deposit-lbl').textContent || 'Deposit';
+  return gt + ' | ' + lbl + ': ' + dep + ' | Balance: ' + bal;
 }
 
 function buildEmailText() {
@@ -503,10 +541,28 @@ function recalc() {
   });
   const vatOn = document.getElementById('vat-toggle').checked;
   const vat   = vatOn ? sub * 0.2 : 0;
+  const total = sub + vat;
   document.getElementById('subtotal').textContent    = money(sub);
   document.getElementById('vat-amt').textContent     = money(vat);
-  document.getElementById('grand-total').textContent = money(sub + vat);
+  document.getElementById('grand-total').textContent = money(total);
   document.getElementById('vat-row').style.display   = vatOn ? '' : 'none';
+
+  // Deposit
+  const depOn   = document.getElementById('deposit-toggle').checked;
+  const depType = document.getElementById('deposit-type').value;
+  const depVal  = parseFloat(document.getElementById('deposit-value').value) || 0;
+  document.getElementById('deposit-controls').style.display = depOn ? '' : 'none';
+  document.getElementById('deposit-row').style.display      = depOn ? '' : 'none';
+  document.getElementById('balance-row').style.display      = depOn ? '' : 'none';
+  if (depOn) {
+    const depAmt = depType === 'pct' ? total * (depVal / 100) : depVal;
+    const balance = total - depAmt;
+    document.getElementById('deposit-lbl').textContent = depType === 'pct'
+      ? 'Deposit (' + depVal + '%)' : 'Deposit';
+    document.getElementById('deposit-amt').textContent  = money(depAmt);
+    document.getElementById('balance-amt').textContent  = money(balance);
+  }
+  save();
   save();
 }
 
@@ -551,6 +607,9 @@ function save() {
     n: document.getElementById('notes').value,
     e: document.getElementById('client-email').value,
     t: document.getElementById('vat-toggle').checked ? 1 : 0,
+    dt: document.getElementById('deposit-toggle').checked ? 1 : 0,
+    dv: document.getElementById('deposit-value').value,
+    dy: document.getElementById('deposit-type').value,
     i: rows
   };
   try { localStorage.setItem('sc_quote', JSON.stringify(data)); } catch(e) {}
@@ -568,6 +627,9 @@ function load() {
   document.getElementById('notes').value             = data.n || '';
   document.getElementById('client-email').value       = data.e || '';
   document.getElementById('vat-toggle').checked      = !!data.t;
+  if (data.dt) document.getElementById('deposit-toggle').checked = true;
+  if (data.dv) document.getElementById('deposit-value').value    = data.dv;
+  if (data.dy) document.getElementById('deposit-type').value     = data.dy;
   (data.i && data.i.length ? data.i : []).forEach(r => addRow(r[0],r[1],r[2]));
   return true;
 }
