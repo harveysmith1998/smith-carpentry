@@ -590,10 +590,17 @@ function autoResizeDesc(el) {
 }
 // Before printing, expand all description textareas to full content height
 window.addEventListener('beforeprint', function() {
-  document.querySelectorAll('.i-desc').forEach(function(el) {
+  // Expand all textareas to full content height before printing
+  document.querySelectorAll('textarea').forEach(function(el) {
     el.style.height = 'auto';
     el.style.height = el.scrollHeight + 'px';
+    el.style.overflow = 'visible';
   });
+});
+window.addEventListener('afterprint', function() {
+  // Reset notes textarea after printing
+  const notes = document.getElementById('notes');
+  if (notes) { notes.style.height = ''; notes.style.overflow = ''; }
 });
 
 function addRow(desc='', qty='', unit='') {
