@@ -1078,7 +1078,7 @@ inv.fromPhone;
     var ref   = 'INV-' + (document.getElementById('invoiceNo').value || '001');
     var total = document.getElementById('totalOut').textContent || '£0.00';
     var due   = document.getElementById('dueDate').value;
-    return 'Hi ' + firstName + ',\n\nThank you for choosing Smith Carpentry — it was a pleasure working with you.\n\nPlease find attached invoice ' + ref + ' for ' + total + (due ? ', due by ' + fmtDisplay(due) : '') + '.\n\nPayment can be made by bank transfer to the details shown on the invoice. If you have any questions don\'t hesitate to get in touch.\n\nKind regards,\nHarvey Smith\nSmith Carpentry\n07462 918476\nsmithcarpentryltd@outlook.com';
+    return 'Hi ' + firstName + ',\n\nThank you for choosing Smith Carpentry — it was a pleasure working with you and I hope you\'re happy with the finished result.\n\nPlease find your invoice attached for ' + total + (due ? ', due by ' + fmtDisplay(due) : '') + '. Payment can be made by bank transfer using the details shown on the invoice.\n\nIf you have a spare moment, a Google review would mean the world to a small business like mine — there\'s a link at the bottom of your invoice that takes you straight there.\n\nThanks again and don\'t hesitate to get in touch if you need anything in the future.\n\nKind regards,\nHarvey Smith\nSmith Carpentry\n07462 918476\nsmithcarpentryltd@outlook.com';
   }
 
   function updateEmailPreview() {
