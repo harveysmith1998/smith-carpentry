@@ -1156,15 +1156,35 @@ inv.fromPhone;
   function importQuote(i) {
     let log = [];
     try { log = JSON.parse(localStorage.getItem('sc_quote_log') || '[]'); } catch(e) {}
-    const q = log[i];
+    let q = log[i];
     if (!q) return;
 
-    // Fill client details
+    // If this log entry lacks full data, try to get it from sc_quote (last saved quote)
+    if (!q.clientFull && !q.items) {
+      try {
+        const full = JSON.parse(localStorage.getItem('sc_quote') || '{}');
+        // Match by ref
+        const fullRef = 'QT-' + (full.r || '');
+        if (fullRef === q.ref || !full.r) {
+          q = Object.assign({}, q, {
+            clientFull:  full.c || '',
+            clientEmail: full.e || '',
+            items:       full.i || []
+          });
+        }
+      } catch(e) {}
+    }
+
+    // Fill client name + address
     if (q.clientFull) {
       const lines = q.clientFull.split('\n');
       document.getElementById('clientName').value  = lines[0].trim();
       document.getElementById('siteAddress').value = lines.slice(1).join('\n').trim();
+    } else if (q.client) {
+      document.getElementById('clientName').value = q.client;
     }
+
+    // Fill email
     if (q.clientEmail) document.getElementById('clientEmail').value = q.clientEmail;
 
     // Fill line items
