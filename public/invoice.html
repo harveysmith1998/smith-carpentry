@@ -1160,16 +1160,14 @@ inv.fromPhone;
     if (!q) return;
 
     // If this log entry lacks full data, try to get it from sc_quote (last saved quote)
-    if (!q.clientFull && !q.items) {
+    if (!q.clientFull || !q.items) {
       try {
         const full = JSON.parse(localStorage.getItem('sc_quote') || '{}');
-        // Match by ref
-        const fullRef = 'QT-' + (full.r || '');
-        if (fullRef === q.ref || !full.r) {
+        if (full && full.c) {
           q = Object.assign({}, q, {
-            clientFull:  full.c || '',
-            clientEmail: full.e || '',
-            items:       full.i || []
+            clientFull:  q.clientFull  || full.c || '',
+            clientEmail: q.clientEmail || full.e || '',
+            items:       (q.items && q.items.length) ? q.items : (full.i || [])
           });
         }
       } catch(e) {}

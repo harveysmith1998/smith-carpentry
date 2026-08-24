@@ -631,8 +631,9 @@ function addRow(desc='', qty='', unit='') {
 
 function save() {
   const rows = [];
-  document.querySelectorAll('.item-row').forEach(row => {
-    rows.push([row.querySelector('.i-desc').value, row.querySelector('.i-qty').value, row.querySelector('.i-unit').value]);
+  document.querySelectorAll('#items-body tr').forEach(row => {
+    const d = row.querySelector('.i-desc'); const q = row.querySelector('.i-qty'); const u = row.querySelector('.i-unit');
+    if (d || u) rows.push([d ? d.value : '', q ? q.value : '', u ? u.value : '']);
   });
   const data = {
     r: 'QT-' + (document.getElementById('quote-ref-num').value || '001'),
