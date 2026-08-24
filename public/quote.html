@@ -713,7 +713,7 @@ function renderLog() {
   const log = getLog();
   const el  = document.getElementById('log-list');
   if (!log.length) { el.innerHTML = '<div class="log-empty">No quotes saved yet.<br>Fill in a quote and hit Save as PDF — it\'ll appear here.</div>'; return; }
-  el.innerHTML = log.map(e => `
+  el.innerHTML = log.map((e, i) => `
     <div class="log-row">
       <div class="log-ref">${e.ref}</div>
       <div class="log-meta">
@@ -722,10 +722,52 @@ function renderLog() {
       </div>
       <div class="log-right">
         <div class="log-total">${e.total}</div>
-        <div class="log-date">Saved ${fmtDisplay(e.saved)}</div>
+        <button onclick="loadQuote(${i})" style="margin-top:4px;background:var(--teal);color:#0a1010;border:none;border-radius:5px;padding:4px 10px;font-size:11px;font-weight:800;font-family:inherit;cursor:pointer;letter-spacing:0.05em">LOAD</button>
       </div>
     </div>`).join('');
 }
+function loadQuote(i) {
+  const log = getLog();
+  const e = log[i];
+  if (!e) return;
+  if (!confirm('Load ' + e.ref + ' for ' + (e.client || 'this client') + '? This will replace the current quote.')) return;
+
+  // Restore all fields from log entry
+  const refNum = (e.ref || 'QT-001').replace('QT-', '');
+  document.getElementById('quote-ref-num').value = refNum;
+  document.getElementById('ref-display').textContent = e.ref || 'QT-001';
+  if (e.date) document.getElementById('quote-date').value = e.date;
+  if (e.clientFull !== undefined) document.getElementById('client-name').value = e.clientFull;
+  else if (e.client) document.getElementById('client-name').value = e.client;
+  if (e.clientEmail) document.getElementById('client-email').value = e.clientEmail;
+
+  // Restore line items
+  const tbody = document.getElementById('items-body');
+  tbody.innerHTML = '';
+  const items = e.items && e.items.length ? e.items : [];
+  if (items.length) {
+    items.forEach(function(row) { addRow(row[0] || '', row[1] || '', row[2] || ''); });
+  } else {
+    addRow(); addRow(); addRow();
+  }
+
+  // Restore deposit
+  if (e.deposit) {
+    document.getElementById('deposit-toggle').checked = !!e.deposit.on;
+    if (e.deposit.type) document.getElementById('deposit-type').value = e.deposit.type;
+    if (e.deposit.val)  document.getElementById('deposit-value').value = e.deposit.val;
+  }
+
+  recalc();
+  save();
+
+  // Switch to Quote tab
+  document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+  document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
+  document.querySelector('.tab-btn[data-tab="quote"]') && document.querySelector('.tab-btn[data-tab="quote"]').classList.add('active');
+  document.getElementById('quote-panel') && document.getElementById('quote-panel').classList.add('active');
+}
+
 function clearLog() {
   if (!confirm('Clear the full quote log?')) return;
   localStorage.removeItem('sc_quote_log');
