@@ -854,24 +854,11 @@ function clearAll() {
   const IS_INVOICE = !!document.getElementById('invoiceNo');
   const logKey = IS_INVOICE ? 'sc_invoice_log' : 'sc_quote_log';
 
-  cloudGet(logKey, function(cloudLog) {
-    if (!Array.isArray(cloudLog) || !cloudLog.length) return;
-    let local = [];
-    try { local = JSON.parse(localStorage.getItem(logKey) || '[]'); } catch(e) {}
-    // Merge: combine both, dedupe by ref, keep most recently saved
-    const merged = {};
-    cloudLog.concat(local).forEach(function(e) {
-      if (!e || !e.ref) return;
-      if (!merged[e.ref] || (e.saved && e.saved > (merged[e.ref].saved||''))) {
-        merged[e.ref] = e;
-      }
-    });
-    const result = Object.values(merged).sort(function(a,b) {
-      return (b.saved||'') > (a.saved||'') ? 1 : -1;
-    });
-    try { localStorage.setItem(logKey, JSON.stringify(result)); } catch(e) {}
-    if (typeof renderLog === 'function') renderLog();
-  });
+  // Push local log to cloud on load to keep cloud in sync
+  // (we trust local as source of truth — cloud is backup/sync for other devices)
+  const localLog = [];
+  try { localLog.push(...JSON.parse(localStorage.getItem(logKey) || '[]')); } catch(e) {}
+  if (localLog.length) cloudSet(logKey, localLog);
 
   // Patch saveLog / saveInvoiceLog to also push to cloud
   const origSetItem = localStorage.setItem.bind(localStorage);
