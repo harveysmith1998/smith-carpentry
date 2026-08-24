@@ -1159,20 +1159,6 @@ inv.fromPhone;
     let q = log[i];
     if (!q) return;
 
-    // If this log entry lacks full data, try to get it from sc_quote (last saved quote)
-    if (!q.clientFull || !q.items) {
-      try {
-        const full = JSON.parse(localStorage.getItem('sc_quote') || '{}');
-        if (full && full.c) {
-          q = Object.assign({}, q, {
-            clientFull:  q.clientFull  || full.c || '',
-            clientEmail: q.clientEmail || full.e || '',
-            items:       (q.items && q.items.length) ? q.items : (full.i || [])
-          });
-        }
-      } catch(e) {}
-    }
-
     // Fill client name + address
     if (q.clientFull) {
       const lines = q.clientFull.split('\n');
