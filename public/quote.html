@@ -19,6 +19,8 @@
   --muted:   #8b9292;
   --danger:  #e05555;
   --green:   #22c55e;
+  --surface: #1a2424;
+  --border:  #2a3a3a;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -248,8 +250,10 @@ td.del-cell { width: 32px; text-align: center; }
 .action-bar {
   position: fixed; bottom: 0; left: 0; right: 0;
   background: #000; border-top: 1px solid var(--teal-dim);
-  padding: 10px 16px; display: flex; gap: 10px; z-index: 100;
+  padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+  display: flex; flex-wrap: wrap; gap: 8px 10px; z-index: 100;
 }
+.action-hint { flex-basis: 100%; font-size: 11px; color: var(--muted); text-align: center; }
 .btn-save {
   flex: 1; background: var(--teal); color: #0a1010;
   font-size: 13px; font-weight: 800; font-family: inherit;
@@ -258,6 +262,9 @@ td.del-cell { width: 32px; text-align: center; }
   transition: background 0.15s;
 }
 .btn-save:hover { background: #1af0f0; }
+.btn-save.btn-outline { background: transparent; border: 1.5px solid var(--teal); color: var(--teal); }
+.btn-save.btn-outline:hover { background: rgba(34,211,211,0.08); }
+.tc-block strong { color: var(--text); }
 .btn-clear {
   background: none; border: 1px solid var(--line); color: var(--muted);
   font-size: 12px; font-family: inherit; border-radius: 6px;
@@ -300,7 +307,7 @@ td.del-cell { width: 32px; text-align: center; }
   /* iOS Safari: prevent auto-zoom on focus */
   input, textarea, select { font-size: 16px !important; }
 
-  body { padding-bottom: env(safe-area-inset-bottom); }
+  body { padding-bottom: calc(110px + env(safe-area-inset-bottom)); }
 
   /* Description textarea */
   tbody td textarea.i-desc {
@@ -336,6 +343,35 @@ td.del-cell { width: 32px; text-align: center; }
     #notes { display: none !important; }
     #notes-print { display: block !important; }
   }
+
+  /* Print/PDF: no scroll bars, spinners or date-picker icons */
+  @media print {
+    .items-wrap { overflow: visible !important; }
+    table { min-width: 0 !important; }
+    textarea, input { overflow: hidden !important; resize: none !important; }
+    * { scrollbar-width: none !important; }
+    ::-webkit-scrollbar { display: none !important; width: 0 !important; height: 0 !important; }
+    input[type="date"]::-webkit-calendar-picker-indicator { display: none !important; }
+    input::-webkit-inner-spin-button, input::-webkit-outer-spin-button { -webkit-appearance: none !important; margin: 0 !important; }
+    input[type="number"] { -moz-appearance: textfield !important; appearance: textfield !important; }
+    /* Textareas are swapped for plain text so long descriptions/addresses never get cut off */
+    textarea.i-desc, #client-name { display: none !important; }
+    .print-text { display: block !important; white-space: pre-wrap; word-break: break-word; line-height: 1.5; }
+    tbody td .print-text { padding: 6px 4px; }
+    tr.print-empty { display: none !important; }
+    .vat-toggle-row, .deposit-controls { display: none !important; }
+    :root { --surface: transparent; --border: transparent; }
+  }
+
+  /* Deposit payment details (only shown when a deposit is included) */
+  .deposit-pay {
+    background: var(--card2); border-bottom: 1px solid var(--line); border-left: 3px solid var(--teal);
+    padding: 12px 16px; page-break-inside: avoid; break-inside: avoid;
+  }
+  .deposit-pay .lbl { font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--teal); margin-bottom: 6px; }
+  .deposit-pay .dp-amount { font-size: 13px; margin-bottom: 6px; }
+  .deposit-pay .dp-amount strong { color: var(--teal); font-family: "Courier New", monospace; }
+  .deposit-pay .dp-bank { font-size: 13px; line-height: 1.7; font-family: "Courier New", monospace; }
 </style>
 </head>
 <body>
@@ -435,6 +471,12 @@ td.del-cell { width: 32px; text-align: center; }
   </div>
 </div>
 
+<div class="deposit-pay" id="deposit-pay" style="display:none">
+  <div class="lbl">Deposit Payment</div>
+  <div class="dp-amount">Deposit to secure your start date: <strong id="deposit-pay-amt">£0.00</strong></div>
+  <div class="dp-bank">Account Name: H SMITH<br>Account Number: 68415591<br>Sort Code: 55-61-17</div>
+</div>
+
 <div class="notes-block">
   <div class="lbl">Scope of Works / Notes</div>
   <textarea id="notes" placeholder="Detail what is included — materials, number of days, exclusions (plastering, electrics, decorating etc.)"></textarea>
@@ -442,7 +484,16 @@ td.del-cell { width: 32px; text-align: center; }
 </div>
 
 <div class="validity-note">
-  This quotation is valid for 30 days from the date above. A deposit may be required to secure your start date. All works carry a 12-month workmanship guarantee.
+  This quotation is valid for 30 days from the date above. A deposit may be required to secure your start date.
+</div>
+
+<div class="tc-block" style="margin-top:18px;padding:14px 16px;border:1px solid var(--line);border-radius:6px;font-size:11px;line-height:1.65;color:var(--muted);page-break-inside:avoid;">
+  <strong style="font-size:12px;display:block;margin-bottom:8px;">Terms &amp; Conditions — Smith Carpentry</strong>
+  <p style="margin:0 0 6px"><strong>Acceptance:</strong> By accepting this quotation verbally, in writing, or by paying the deposit, the customer agrees to the terms and conditions set out below.</p>
+  <p style="margin:0 0 6px"><strong>Deposit &amp; Payment:</strong> A deposit is required to secure your start date before works commence. For longer projects, stage payments will be agreed in advance. The final balance is due in full upon practical completion of the works, unless otherwise agreed in writing.</p>
+  <p style="margin:0 0 6px"><strong>Materials:</strong> All materials supplied by Smith Carpentry remain the property of Smith Carpentry until paid for in full. Smith Carpentry reserves the right to remove supplied materials if payment is not received.</p>
+  <p style="margin:0 0 6px"><strong>Cancellation:</strong> If the customer cancels or suspends the works after they have commenced, all costs reasonably incurred to the date of cancellation are payable, including materials ordered and labour completed.</p>
+  <p style="margin:0 0 6px"><strong>Late Payment:</strong> In accordance with the Late Payment of Commercial Debts (Interest) Act 1998, interest will be charged at 8% above the Bank of England base rate on any overdue invoices. Smith Carpentry also reserves the right to suspend any ongoing works if payment terms are not met.</p>
 </div>
 
 <div class="doc-footer">
@@ -478,8 +529,8 @@ td.del-cell { width: 32px; text-align: center; }
 <div class="action-bar">
   <button class="btn-clear" onclick="clearAll()">Clear</button>
   <button class="btn-save" onclick="savePDF()">1. Save as PDF</button>
-  <button class="btn-save" onclick="openEmail()" style="margin-top:8px;background:transparent;border:1.5px solid var(--teal);color:var(--teal)">2. Open Email &amp; Attach PDF</button>
-  <div style="font-size:11px;color:var(--muted);text-align:center;margin-top:6px">Save the PDF first, then open Mail and attach it</div>
+  <button class="btn-save btn-outline" onclick="openEmail()">2. Open Email</button>
+  <div class="action-hint">Save the PDF first, then open Mail and attach it</div>
 </div>
 
 <script>
@@ -492,6 +543,7 @@ function fmtDisplay(iso) {
 }
 function money(n) { return '£' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,','); }
 function esc(s) { return String(s).replace(/"/g,'&quot;'); }
+function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 function getClientFirstName() {
   const raw = (document.getElementById('client-name').value || '').trim();
@@ -514,12 +566,15 @@ function buildEmailText() {
   const valid = document.getElementById('valid-until').value;
   const first = getClientFirstName();
   const total = getGrandTotal();
+  const depositLine = document.getElementById('deposit-toggle').checked
+    ? `\nA deposit of ${document.getElementById('deposit-amt').textContent} secures your start date — bank details are on the quote.\n`
+    : '';
   return `Hi ${first},
 
 Thank you for getting in touch — it was great speaking with you.
 
 Please find attached your quotation (${ref}) from Smith Carpentry, with a total of ${total}.
-
+${depositLine}
 This quote is valid for 30 days${valid ? ' until ' + fmtDisplay(valid) : ''}. If you have any questions or would like to go ahead, just give me a call or reply to this email and I'll get you booked in.
 
 Kind regards,
@@ -552,6 +607,7 @@ function showTab(name) {
   document.getElementById('tab-' + name).classList.add('active');
   if (name === 'email') updateEmailPreview();
   if (name === 'log')   renderLog();
+  if (name === 'quote') document.querySelectorAll('.i-desc, #notes').forEach(autoResizeDesc);
 }
 
 function recalc() {
@@ -578,6 +634,7 @@ function recalc() {
   document.getElementById('deposit-controls').style.display = depOn ? '' : 'none';
   document.getElementById('deposit-row').style.display      = depOn ? '' : 'none';
   document.getElementById('balance-row').style.display      = depOn ? '' : 'none';
+  document.getElementById('deposit-pay').style.display      = depOn ? '' : 'none';
   if (depOn) {
     const depAmt = depType === 'pct' ? total * (depVal / 100) : depVal;
     const balance = total - depAmt;
@@ -585,13 +642,14 @@ function recalc() {
       ? 'Deposit (' + depVal + '%)' : 'Deposit';
     document.getElementById('deposit-amt').textContent  = money(depAmt);
     document.getElementById('balance-amt').textContent  = money(balance);
+    document.getElementById('deposit-pay-amt').textContent = money(depAmt);
   }
-  save();
   save();
 }
 
 
 function autoResizeDesc(el) {
+  if (!el || !el.offsetParent) return; // hidden tab: measure when shown
   el.style.height = 'auto';
   el.style.height = el.scrollHeight + 'px';
 }
@@ -603,15 +661,32 @@ window.addEventListener('beforeprint', function() {
   if (notesEl && notesPrint) {
     notesPrint.textContent = notesEl.value;
   }
-  // Expand description textareas
-  document.querySelectorAll('.i-desc').forEach(function(el) {
+  // Expand description and client textareas so nothing needs scrolling
+  document.querySelectorAll('.i-desc, #client-name').forEach(function(el) {
     el.style.height = 'auto';
     el.style.height = el.scrollHeight + 'px';
+  });
+});
+window.addEventListener('beforeprint', function() {
+  document.querySelectorAll('.print-text').forEach(function(el) { el.remove(); });
+  document.querySelectorAll('textarea.i-desc, #client-name').forEach(function(el) {
+    var div = document.createElement('div');
+    div.className = 'print-text';
+    div.style.display = 'none';
+    div.textContent = el.value;
+    el.insertAdjacentElement('afterend', div);
+  });
+  // Leave unused blank rows off the PDF
+  document.querySelectorAll('#items-body tr').forEach(function(row) {
+    var d = row.querySelector('.i-desc'), u = row.querySelector('.i-unit');
+    row.classList.toggle('print-empty', !(d && d.value.trim()) && !(u && parseFloat(u.value)));
   });
 });
 window.addEventListener('afterprint', function() {
   var notesPrint = document.getElementById('notes-print');
   if (notesPrint) notesPrint.textContent = '';
+  document.querySelectorAll('.print-text').forEach(function(el) { el.remove(); });
+  document.querySelectorAll('tr.print-empty').forEach(function(row) { row.classList.remove('print-empty'); });
 });
 
 function addRow(desc='', qty='', unit='') {
@@ -619,13 +694,14 @@ function addRow(desc='', qty='', unit='') {
   const tr = document.createElement('tr');
   tr.className = 'item-row';
   tr.innerHTML = `
-    <td class="col-desc"><textarea class="i-desc" rows="2" placeholder="Description of work or materials" oninput="save();autoResizeDesc(this)"></textarea></td>
+    <td class="col-desc"><textarea class="i-desc" rows="2" placeholder="Description of work or materials" oninput="save();autoResizeDesc(this)">${escHtml(desc)}</textarea></td>
     <td class="col-qty"><input class="i-qty num" type="number" min="0" step="any" placeholder="1" value="${esc(qty)}" oninput="recalc()"></td>
     <td class="col-unit"><input class="i-unit num" type="number" min="0" step="0.01" placeholder="0.00" value="${esc(unit)}" oninput="recalc()"></td>
     <td class="col-tot total-cell i-tot">£0.00</td>
     <td class="col-del del-cell"><button class="del-btn" onclick="this.closest('tr').remove();recalc()" title="Remove">×</button></td>
   `;
   tbody.appendChild(tr);
+  autoResizeDesc(tr.querySelector('.i-desc'));
   recalc();
 }
 
@@ -698,6 +774,10 @@ function logCurrentQuote() {
     // Full data for invoice import
     clientFull:  document.getElementById('client-name').value || '',
     clientEmail: document.getElementById('client-email').value || '',
+    validUntil:  document.getElementById('valid-until').value || '',
+    notes:       document.getElementById('notes').value || '',
+    vat:         document.getElementById('vat-toggle').checked,
+    ts:          Date.now(),
     items: rows,
     deposit: document.getElementById('deposit-toggle').checked ? {
       on:   true,
@@ -715,13 +795,13 @@ function renderLog() {
   if (!log.length) { el.innerHTML = '<div class="log-empty">No quotes saved yet.<br>Fill in a quote and hit Save as PDF — it\'ll appear here.</div>'; return; }
   el.innerHTML = log.map((e, i) => `
     <div class="log-row">
-      <div class="log-ref">${e.ref}</div>
+      <div class="log-ref">${escHtml(e.ref || '')}</div>
       <div class="log-meta">
-        <div class="log-client">${e.client || '—'}</div>
+        <div class="log-client">${escHtml(e.client || '—')}</div>
         <div class="log-date">Quoted ${fmtDisplay(e.date)}</div>
       </div>
       <div class="log-right">
-        <div class="log-total">${e.total}</div>
+        <div class="log-total">${escHtml(e.total || '')}</div>
         <button onclick="loadQuote(${i})" style="margin-top:4px;background:var(--teal);color:#0a1010;border:none;border-radius:5px;padding:4px 10px;font-size:11px;font-weight:800;font-family:inherit;cursor:pointer;letter-spacing:0.05em">LOAD</button>
       </div>
     </div>`).join('');
@@ -739,7 +819,10 @@ function loadQuote(i) {
   if (e.date) document.getElementById('quote-date').value = e.date;
   if (e.clientFull !== undefined) document.getElementById('client-name').value = e.clientFull;
   else if (e.client) document.getElementById('client-name').value = e.client;
-  if (e.clientEmail) document.getElementById('client-email').value = e.clientEmail;
+  document.getElementById('client-email').value = e.clientEmail || '';
+  if (e.validUntil) document.getElementById('valid-until').value = e.validUntil;
+  if (e.notes !== undefined) document.getElementById('notes').value = e.notes;
+  if (e.vat !== undefined) document.getElementById('vat-toggle').checked = !!e.vat;
 
   // Restore line items
   const tbody = document.getElementById('items-body');
@@ -785,20 +868,48 @@ function openEmail() {
   document.body.removeChild(a);
 }
 
+function pdfName() {
+  const name = (document.getElementById('client-name').value || '').split('\n')[0].trim();
+  const ref  = 'QT-' + (document.getElementById('quote-ref-num').value || '001');
+  return ((name ? name + ' ' : '') + ref).replace(/[\\/:*?"<>|]/g, '');
+}
+
 function savePDF() {
   logCurrentQuote();
+  // Browsers name the saved PDF after the page title
+  document.title = pdfName();
   window.print();
+}
+
+function nextRefNum() {
+  const log = getLog();
+  const cur = parseInt(document.getElementById('quote-ref-num').value, 10) || 0;
+  const max = log.reduce((m, e) => Math.max(m, parseInt(String(e.ref || '').replace(/^QT-/, ''), 10) || 0), 0);
+  return String((log.length ? max : cur) + 1).padStart(3, '0');
 }
 
 function clearAll() {
   if (!confirm('Clear all and start a new quote?')) return;
+  const today = new Date();
+  const v = new Date(today); v.setDate(v.getDate() + 30);
+  const next = nextRefNum();
   document.getElementById('items-body').innerHTML = '';
   document.getElementById('client-name').value = '';
+  document.getElementById('client-email').value = '';
   document.getElementById('notes').value = '';
   document.getElementById('vat-toggle').checked = false;
+  document.getElementById('deposit-toggle').checked = false;
+  document.getElementById('deposit-type').value = 'pct';
+  document.getElementById('deposit-value').value = '30';
+  document.getElementById('quote-date').value = fmt(today);
+  document.getElementById('valid-until').value = fmt(v);
+  document.getElementById('quote-ref-num').value = next;
+  document.getElementById('ref-display').textContent = 'QT-' + next;
+  document.title = 'Smith Carpentry — Quotation';
   try { localStorage.removeItem('sc_quote'); } catch(e) {}
   addRow(); addRow(); addRow();
   recalc();
+  autoResizeDesc(document.getElementById('notes'));
 }
 
 // Init
@@ -825,48 +936,68 @@ function clearAll() {
 })();
 </script>
 <script>
-// Cloud sync — only runs on smithcarpentry.uk, not local files
+// Cloud sync — only runs on (www.)smithcarpentry.uk, not local files.
+// Both logs are synced on both pages so "Import from Quote" works across devices.
 (function() {
-  const ONLINE = location.hostname === 'smithcarpentry.uk';
-  if (!ONLINE) return;
+  if (!/(^|\.)smithcarpentry\.uk$/.test(location.hostname)) return; // with or without www
 
-  function cloudGet(key, cb) {
-    fetch('/api/sync?key=' + key)
-      .then(function(r) { return r.json(); })
-      .then(function(res) { cb(res.data || []); })
-      .catch(function() { cb([]); });
+  var KEYS = ['sc_quote_log', 'sc_invoice_log'];
+  var origSetItem = localStorage.setItem.bind(localStorage);
+  var origRemoveItem = localStorage.removeItem.bind(localStorage);
+
+  function readLocal(key) {
+    try { return JSON.parse(localStorage.getItem(key) || '[]'); } catch(e) { return []; }
+  }
+
+  function cloudGet(key) {
+    return fetch('/api/sync?key=' + key, { cache: 'no-store' })
+      .then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(function(res) { return Array.isArray(res.data) ? res.data : []; });
   }
 
   function cloudSet(key, data) {
-    fetch('/api/sync', {
+    return fetch('/api/sync', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ key: key, data: data })
     }).catch(function(){});
   }
 
-  // On load: pull cloud log and merge into localStorage (cloud wins for new entries)
-  const LOG_KEY = document.getElementById('qt-list') !== null || document.getElementById('addItemBtn') !== null
-    ? (document.getElementById('addItemBtn') ? 'sc_invoice_log' : 'sc_quote_log')
-    : 'sc_quote_log';
+  // Newer entries win; old entries without a timestamp fall back to their saved date
+  function stamp(e) { return e.ts || Date.parse(e.saved || '') || 0; }
 
-  // Detect which template we're on
-  const IS_INVOICE = !!document.getElementById('invoiceNo');
-  const logKey = IS_INVOICE ? 'sc_invoice_log' : 'sc_quote_log';
+  function merge(local, cloud) {
+    var byRef = {};
+    local.concat(cloud).forEach(function(e) {
+      if (!e || !e.ref) return;
+      var cur = byRef[e.ref];
+      if (!cur || stamp(e) > stamp(cur)) byRef[e.ref] = e;
+    });
+    return Object.keys(byRef).map(function(k) { return byRef[k]; })
+      .sort(function(a, b) { return stamp(b) - stamp(a); });
+  }
 
-  // Push local log to cloud on load to keep cloud in sync
-  // (we trust local as source of truth — cloud is backup/sync for other devices)
-  const localLog = [];
-  try { localLog.push(...JSON.parse(localStorage.getItem(logKey) || '[]')); } catch(e) {}
-  if (localLog.length) cloudSet(logKey, localLog);
+  // Pull the cloud copy, merge with this device, store locally and push the merged list back.
+  // If the pull fails we don't push, so a flaky connection can't wipe the cloud copy.
+  function syncKey(key) {
+    return cloudGet(key).then(function(cloud) {
+      var merged = merge(readLocal(key), cloud);
+      origSetItem(key, JSON.stringify(merged));
+      var logTab = document.getElementById('tab-log');
+      if (logTab && logTab.classList.contains('active') && typeof renderLog === 'function') renderLog();
+      return cloudSet(key, merged);
+    }).catch(function(){});
+  }
 
-  // Patch saveLog / saveInvoiceLog to also push to cloud
-  const origSetItem = localStorage.setItem.bind(localStorage);
+  KEYS.forEach(syncKey);
+
   localStorage.setItem = function(key, value) {
     origSetItem(key, value);
-    if (key === 'sc_quote_log' || key === 'sc_invoice_log') {
-      try { cloudSet(key, JSON.parse(value)); } catch(e) {}
-    }
+    if (KEYS.indexOf(key) >= 0) syncKey(key);
+  };
+  localStorage.removeItem = function(key) {
+    origRemoveItem(key);
+    if (KEYS.indexOf(key) >= 0) cloudSet(key, []);
   };
 })();
 </script>

@@ -705,7 +705,12 @@ Sort Code: 55-61-17</textarea>
         <input type="number" id="vatPercent" value="0" style="width:70px;">
       </div>
       <div class="trow"><span>VAT</span><span id="vatOut">£0.00</span></div>
-      <div class="trow grand"><span>TOTAL DUE</span><span id="totalOut">£0.00</span></div>
+      <div class="row2" style="align-items:center; margin:6px 0;">
+        <label style="margin:0;">Less deposit paid £</label>
+        <input type="number" id="depositPaid" value="0" min="0" step="0.01" style="width:100px;">
+      </div>
+      <div class="trow" id="depositRow" style="display:none"><span>Deposit paid</span><span id="depositOut">-£0.00</span></div>
+      <div class="trow grand"><span id="totalLabel">TOTAL DUE</span><span id="totalOut">£0.00</span></div>
     </div>
   </div>
 
@@ -804,7 +809,11 @@ Sort Code: 55-61-17</textarea>
     });
     const vatPct = parseFloat(document.getElementById('vatPercent').value) || 0;
     const vat = subtotal * (vatPct/100);
-    const total = subtotal + vat;
+    const deposit = Math.max(0, parseFloat(document.getElementById('depositPaid').value) || 0);
+    const total = subtotal + vat - deposit;
+    document.getElementById('depositRow').style.display = deposit > 0 ? '' : 'none';
+    document.getElementById('depositOut').textContent = '-£' + deposit.toFixed(2);
+    document.getElementById('totalLabel').textContent = deposit > 0 ? 'BALANCE DUE' : 'TOTAL DUE';
     document.getElementById('subtotalOut').textContent = '£' + subtotal.toFixed(2);
     document.getElementById('vatOut').textContent = '£' + vat.toFixed(2);
     document.getElementById('totalOut').textContent = '£' + total.toFixed(2);
@@ -812,8 +821,10 @@ Sort Code: 55-61-17</textarea>
 
   document.getElementById('addItemBtn').addEventListener('click', addItem);
   document.getElementById('vatPercent').addEventListener('input', calcTotals);
+  document.getElementById('depositPaid').addEventListener('input', calcTotals);
 
   addItem();
+  setDefaults();
 
   function buildInvoice(){
     const invoiceNo = 'INV-' + (document.getElementById('invoiceNo').value || '001');
@@ -836,6 +847,10 @@ Sort Code: 55-61-17</textarea>
       items.push({ desc: desc, qty: qty, price: price, lineTotal: qty * price });
     });
 
+    const vatPct = parseFloat(document.getElementById('vatPercent').value) || 0;
+    const itemsSum = items.reduce(function(s, i){ return s + i.lineTotal; }, 0);
+    const depositPaid = Math.max(0, parseFloat(document.getElementById('depositPaid').value) || 0);
+
     const subtotal = document.getElementById('subtotalOut').textContent;
     const vat = document.getElementById('vatOut').textContent;
     const total = document.getElementById('totalOut').textContent;
@@ -855,6 +870,8 @@ Sort Code: 55-61-17</textarea>
       subtotal: subtotal,
       vat: vat,
       total: total,
+      gross: itemsSum * (1 + vatPct/100),
+      depositPaid: depositPaid,
       subject: 'Invoice ' + invoiceNo + ' — Smith Carpentry'
     };
   }
@@ -991,6 +1008,14 @@ inv.fromPhone;
     y += 16;
     doc.text('VAT', totalsX, y);
     doc.text(inv.vat, pageWidth - margin - 10, y, { align: 'right' });
+    if (inv.depositPaid > 0) {
+      y += 16;
+      doc.text('Total', totalsX, y);
+      doc.text('£' + inv.gross.toFixed(2), pageWidth - margin - 10, y, { align: 'right' });
+      y += 16;
+      doc.text('Less deposit paid', totalsX, y);
+      doc.text('-£' + inv.depositPaid.toFixed(2), pageWidth - margin - 10, y, { align: 'right' });
+    }
     y += 10;
 
     doc.setFillColor(black[0], black[1], black[2]);
@@ -998,7 +1023,7 @@ inv.fromPhone;
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(11);
     doc.setTextColor(255,255,255);
-    doc.text('TOTAL DUE', totalsX, y + 17);
+    doc.text(inv.depositPaid > 0 ? 'BALANCE DUE' : 'TOTAL DUE', totalsX, y + 17);
     doc.setTextColor(teal[0], teal[1], teal[2]);
     doc.text(inv.total, pageWidth - margin - 10, y + 17, { align: 'right' });
 
@@ -1042,12 +1067,16 @@ inv.fromPhone;
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(9);
     doc.setTextColor(180,185,185);
-    doc.text('Smith Carpentry   |   ' + inv.fromPhone + '   |   ' + inv.fromEmail + '   |   Nottingham, UK', pageWidth / 2, pageHeight - 22, { align: 'center' });
+    doc.text('Smith Carpentry   |   ' + inv.fromPhone + '   |   ' + inv.fromEmail + '   |   Nottingham, UK', pageWidth / 2, pageHeight - 28, { align: 'center' });
+    doc.setFontSize(7);
+    doc.setTextColor(100, 100, 100);
+    doc.text('Payment due by the due date shown above. Thank you for your business.', pageWidth / 2, pageHeight - 19, { align: 'center', maxWidth: pageWidth - 40 });
     doc.setFontSize(8);
     doc.setTextColor(0, 200, 200);
-    doc.textWithLink('⭐ Happy with the work? Leave us a Google review — tap here', pageWidth / 2, pageHeight - 10, { align: 'center', url: 'https://g.page/r/CbI8a2yoeQHhEBM/review' });
+    doc.textWithLink('Happy with the work? Leave us a Google review — tap here', pageWidth / 2, pageHeight - 8, { align: 'center', url: 'https://g.page/r/CbI8a2yoeQHhEBM/review' });
 
-    const filename = 'Invoice-INV-' + (document.getElementById('invoiceNo').value || '001') + '.pdf';
+    const clientForFile = (document.getElementById('clientName').value || '').trim();
+    const filename = ((clientForFile ? clientForFile + ' ' : '') + inv.invoiceNo).replace(/[\\/:*?"<>|]/g, '') + '.pdf';
     doc.save(filename);
 
     document.getElementById('hintText').textContent = 'PDF downloaded — now tap "Open Email & Attach PDF" and attach it before sending.';
@@ -1111,7 +1140,18 @@ inv.fromPhone;
       client: document.getElementById('clientName').value || '',
       total:  document.getElementById('totalOut').textContent,
       date:   document.getElementById('invoiceDate').value || todayStr,
-      saved:  todayStr
+      saved:  todayStr,
+      ts:     Date.now(),
+      dueDate:     document.getElementById('dueDate').value || '',
+      clientEmail: document.getElementById('clientEmail').value || '',
+      siteAddress: document.getElementById('siteAddress').value || '',
+      vatPercent:  document.getElementById('vatPercent').value || '0',
+      depositPaid: document.getElementById('depositPaid').value || '0',
+      notes:       document.getElementById('notes').value || '',
+      items: Array.prototype.map.call(document.querySelectorAll('.item'), function(el){
+        var id = el.id.split('-')[1];
+        return [document.getElementById('desc-'+id).value, document.getElementById('qty-'+id).value, document.getElementById('price-'+id).value];
+      })
     };
     var existing = log.findIndex(function(e){ return e.ref === entry.ref; });
     if (existing >= 0) log[existing] = entry; else log.unshift(entry);
@@ -1121,14 +1161,71 @@ inv.fromPhone;
     var log = getLog();
     var el = document.getElementById('log-list');
     if (!log.length) { el.innerHTML = '<div class="log-empty">No invoices logged yet.<br>Download a PDF invoice — it\'ll appear here.</div>'; return; }
-    el.innerHTML = log.map(function(e){
+    el.innerHTML = log.map(function(e, i){
       return '<div class="log-row">' +
-        '<div class="log-ref">' + e.ref + '</div>' +
-        '<div class="log-meta"><div class="log-client">' + (e.client || '—') + '</div><div class="log-date">Invoiced ' + fmtDisplay(e.date) + '</div></div>' +
-        '<div class="log-right"><div class="log-total">' + e.total + '</div><div class="log-date">Saved ' + fmtDisplay(e.saved) + '</div></div>' +
+        '<div class="log-ref">' + escHtml(e.ref || '') + '</div>' +
+        '<div class="log-meta"><div class="log-client">' + escHtml(e.client || '—') + '</div><div class="log-date">Invoiced ' + fmtDisplay(e.date) + '</div></div>' +
+        '<div class="log-right"><div class="log-total">' + escHtml(e.total || '') + '</div><div class="log-date">Saved ' + fmtDisplay(e.saved) + '</div>' +
+        '<button onclick="loadInvoice(' + i + ')" style="margin-top:4px;background:var(--teal);color:#0a1010;border:none;border-radius:5px;padding:4px 10px;font-size:11px;font-weight:800;font-family:inherit;cursor:pointer;letter-spacing:0.05em">LOAD</button></div>' +
         '</div>';
     }).join('');
   }
+  function escHtml(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function isoDate(d) {
+    var pad = function(n){ return String(n).padStart(2,'0'); };
+    return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate());
+  }
+
+  function nextInvoiceNum() {
+    var max = getLog().reduce(function(m, e){ return Math.max(m, parseInt(String(e.ref || '').replace(/^INV-/, ''), 10) || 0); }, 0);
+    return String(max + 1).padStart(3, '0');
+  }
+
+  // New invoice: today's date, due in 7 days, next number after the log
+  function setDefaults() {
+    var today = new Date();
+    var due = new Date(today); due.setDate(due.getDate() + 7);
+    if (!document.getElementById('invoiceDate').value) document.getElementById('invoiceDate').value = isoDate(today);
+    if (!document.getElementById('dueDate').value) document.getElementById('dueDate').value = isoDate(due);
+    if (!document.getElementById('invoiceNo').value) document.getElementById('invoiceNo').value = nextInvoiceNum();
+  }
+
+  function fillItems(items) {
+    document.getElementById('itemsList').innerHTML = '';
+    itemCount = 0;
+    items.forEach(function(item) {
+      if (!item[0] && !item[2]) return;
+      addItem();
+      var id = itemCount;
+      document.getElementById('desc-'  + id).value = item[0] || '';
+      document.getElementById('qty-'   + id).value = item[1] || 1;
+      document.getElementById('price-' + id).value = item[2] || 0;
+    });
+    if (!itemCount) addItem();
+    calcTotals();
+  }
+
+  function loadInvoice(i) {
+    var e = getLog()[i];
+    if (!e) return;
+    if (!e.items) { alert(e.ref + ' was saved before full invoice details were stored, so it can\'t be reloaded.'); return; }
+    if (!confirm('Load ' + e.ref + ' for ' + (e.client || 'this client') + '? This will replace the current invoice.')) return;
+    document.getElementById('invoiceNo').value   = String(e.ref || '').replace(/^INV-/, '');
+    document.getElementById('invoiceDate').value = e.date || '';
+    document.getElementById('dueDate').value     = e.dueDate || '';
+    document.getElementById('clientName').value  = e.client || '';
+    document.getElementById('clientEmail').value = e.clientEmail || '';
+    document.getElementById('siteAddress').value = e.siteAddress || '';
+    document.getElementById('vatPercent').value  = e.vatPercent || '0';
+    document.getElementById('depositPaid').value = e.depositPaid || '0';
+    document.getElementById('notes').value       = e.notes || '';
+    fillItems(e.items);
+    showTab('invoice');
+  }
+
   function clearLog() {
     if (!confirm('Clear the full invoice log?')) return;
     localStorage.removeItem('sc_invoice_log');
@@ -1144,9 +1241,9 @@ inv.fromPhone;
     } else {
       el.innerHTML = log.map(function(q, i) {
         return '<div class="qt-row" onclick="importQuote(' + i + ')">' +
-          '<div class="qt-ref">' + (q.ref||'—') + '</div>' +
-          '<div class="qt-client">' + (q.client||'—') + '</div>' +
-          '<div class="qt-meta">' + (q.total||'') + ' &nbsp;·&nbsp; Quoted ' + (q.date||'') + '</div>' +
+          '<div class="qt-ref">' + escHtml(q.ref||'—') + '</div>' +
+          '<div class="qt-client">' + escHtml(q.client||'—') + '</div>' +
+          '<div class="qt-meta">' + escHtml(q.total||'') + ' &nbsp;·&nbsp; Quoted ' + escHtml(q.date||'') + '</div>' +
           '</div>';
       }).join('');
     }
@@ -1172,20 +1269,19 @@ inv.fromPhone;
     if (q.clientEmail) document.getElementById('clientEmail').value = q.clientEmail;
 
     // Fill line items
-    if (q.items && q.items.length) {
-      document.getElementById('itemsList').innerHTML = '';
-      itemCount = 0;
-      q.items.forEach(function(item) {
-        if (!item[0] && !item[2]) return;
-        addItem();
-        const id = itemCount;
-        const descEl  = document.getElementById('desc-'  + id);
-        const qtyEl   = document.getElementById('qty-'   + id);
-        const priceEl = document.getElementById('price-' + id);
-        if (descEl)  descEl.value  = item[0] || '';
-        if (qtyEl)   qtyEl.value   = item[1] || 1;
-        if (priceEl) priceEl.value = item[2] || 0;
-      });
+    if (q.items && q.items.length) fillItems(q.items);
+
+    // VAT (quotes saved before this update don't record it — leave as is)
+    if (q.vat !== undefined) document.getElementById('vatPercent').value = q.vat ? 20 : 0;
+
+    // Deposit from the quote, taken off the total as already paid
+    document.getElementById('depositPaid').value = 0;
+    calcTotals();
+    if (q.deposit && q.deposit.on) {
+      const gross = parseFloat(document.getElementById('totalOut').textContent.replace(/[£,]/g, '')) || 0;
+      const val = parseFloat(q.deposit.val) || 0;
+      const dep = q.deposit.type === 'fixed' ? val : gross * val / 100;
+      document.getElementById('depositPaid').value = dep.toFixed(2);
       calcTotals();
     }
 
@@ -1207,47 +1303,68 @@ inv.fromPhone;
   </div>
 </div>
 <script>
-// Cloud sync — only runs on smithcarpentry.uk, not local files
+// Cloud sync — only runs on (www.)smithcarpentry.uk, not local files.
+// Both logs are synced on both pages so "Import from Quote" works across devices.
 (function() {
-  const ONLINE = location.hostname === 'smithcarpentry.uk';
-  if (!ONLINE) return;
+  if (!/(^|\.)smithcarpentry\.uk$/.test(location.hostname)) return; // with or without www
 
-  function cloudGet(key, cb) {
-    fetch('/api/sync?key=' + key)
-      .then(function(r) { return r.json(); })
-      .then(function(res) { cb(res.data || []); })
-      .catch(function() { cb([]); });
+  var KEYS = ['sc_quote_log', 'sc_invoice_log'];
+  var origSetItem = localStorage.setItem.bind(localStorage);
+  var origRemoveItem = localStorage.removeItem.bind(localStorage);
+
+  function readLocal(key) {
+    try { return JSON.parse(localStorage.getItem(key) || '[]'); } catch(e) { return []; }
+  }
+
+  function cloudGet(key) {
+    return fetch('/api/sync?key=' + key, { cache: 'no-store' })
+      .then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(function(res) { return Array.isArray(res.data) ? res.data : []; });
   }
 
   function cloudSet(key, data) {
-    fetch('/api/sync', {
+    return fetch('/api/sync', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ key: key, data: data })
     }).catch(function(){});
   }
 
-  // On load: pull cloud log and merge into localStorage (cloud wins for new entries)
-  const LOG_KEY = document.getElementById('qt-list') !== null || document.getElementById('addItemBtn') !== null
-    ? (document.getElementById('addItemBtn') ? 'sc_invoice_log' : 'sc_quote_log')
-    : 'sc_quote_log';
+  // Newer entries win; old entries without a timestamp fall back to their saved date
+  function stamp(e) { return e.ts || Date.parse(e.saved || '') || 0; }
 
-  // Detect which template we're on
-  const IS_INVOICE = !!document.getElementById('invoiceNo');
-  const logKey = IS_INVOICE ? 'sc_invoice_log' : 'sc_quote_log';
+  function merge(local, cloud) {
+    var byRef = {};
+    local.concat(cloud).forEach(function(e) {
+      if (!e || !e.ref) return;
+      var cur = byRef[e.ref];
+      if (!cur || stamp(e) > stamp(cur)) byRef[e.ref] = e;
+    });
+    return Object.keys(byRef).map(function(k) { return byRef[k]; })
+      .sort(function(a, b) { return stamp(b) - stamp(a); });
+  }
 
-  // Push local log to cloud on load (local is source of truth)
-  const localLog = [];
-  try { localLog.push(...JSON.parse(localStorage.getItem(logKey) || '[]')); } catch(e) {}
-  if (localLog.length) cloudSet(logKey, localLog);
+  // Pull the cloud copy, merge with this device, store locally and push the merged list back.
+  // If the pull fails we don't push, so a flaky connection can't wipe the cloud copy.
+  function syncKey(key) {
+    return cloudGet(key).then(function(cloud) {
+      var merged = merge(readLocal(key), cloud);
+      origSetItem(key, JSON.stringify(merged));
+      var logTab = document.getElementById('tab-log');
+      if (logTab && logTab.classList.contains('active') && typeof renderLog === 'function') renderLog();
+      return cloudSet(key, merged);
+    }).catch(function(){});
+  }
 
-  // Patch saveLog / saveInvoiceLog to also push to cloud
-  const origSetItem = localStorage.setItem.bind(localStorage);
+  KEYS.forEach(syncKey);
+
   localStorage.setItem = function(key, value) {
     origSetItem(key, value);
-    if (key === 'sc_quote_log' || key === 'sc_invoice_log') {
-      try { cloudSet(key, JSON.parse(value)); } catch(e) {}
-    }
+    if (KEYS.indexOf(key) >= 0) syncKey(key);
+  };
+  localStorage.removeItem = function(key) {
+    origRemoveItem(key);
+    if (KEYS.indexOf(key) >= 0) cloudSet(key, []);
   };
 })();
 </script>
