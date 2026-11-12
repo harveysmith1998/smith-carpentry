@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Smith Carpentry — Invoice</title>
 <script>
+  // Customer view: /i/<id> shows the same PDF invoice the customer was sent
+  var VIEW_ID = (location.pathname.match(/^\/i\/([A-Za-z0-9]{12,32})\/?$/) || [])[1] || null;
+  if (VIEW_ID) document.documentElement.classList.add('customer-view');
+</script>
+<script src="/sc-cloud.js"></script>
+<script>
 /** @license
  *
  * jsPDF - PDF Document creation from JavaScript
@@ -632,6 +638,29 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
   .qt-meta { font-size:11px; color:var(--muted); margin-top:2px; }
   .modal-cancel { width:100%; margin-top:12px; background:transparent; border:1.5px solid var(--muted); color:var(--muted); border-radius:8px; padding:10px; font-family:inherit; font-size:13px; cursor:pointer; }
   .import-btn { width:100%; background:var(--teal); color:#0a1010; font-weight:800; font-family:inherit; font-size:13px; letter-spacing:0.06em; text-transform:uppercase; border:none; border-radius:8px; padding:13px; cursor:pointer; margin-bottom:10px; }
+
+  /* Log: online status + copy link */
+  .log-status{font-size:10px;margin-top:2px;line-height:1.4;}
+  .log-link-btn{margin-top:4px;margin-left:4px;background:transparent;color:var(--teal);border:1px solid var(--teal);border-radius:5px;padding:3px 8px;font-size:11px;font-weight:800;font-family:inherit;cursor:pointer;letter-spacing:0.05em;}
+
+  /* ---- Customer view (/i/<id>): the invoice PDF itself ---- */
+  #customer-view, .customer-bar{display:none;}
+  html.customer-view .header, html.customer-view .tabs, html.customer-view .tab-panel,
+  html.customer-view .sendbar, html.customer-view #importModal{display:none !important;}
+  html.customer-view body{background:#e6e9e9;color:#111;padding-bottom:calc(110px + env(safe-area-inset-bottom));}
+  html.customer-view #customer-view{display:block;padding-top:16px;}
+  html.customer-view .customer-bar{display:block;}
+  .cv-pages{max-width:820px;margin:0 auto;padding:0 12px;}
+  .cv-page{display:block;width:100%;height:auto;margin:0 auto 14px;background:#fff;box-shadow:0 2px 16px rgba(0,0,0,.12);}
+  .cv-loading,.cv-error{text-align:center;padding:60px 20px;color:#555;font-size:15px;line-height:1.7;}
+  .cv-error a{color:#009090;}
+  .cv-frame{width:100%;height:80vh;border:0;background:#fff;}
+  .cv-review{display:block;text-align:center;color:#009090;font-size:13px;font-weight:700;margin:4px 0 20px;text-decoration:none;}
+  .customer-bar{position:fixed;left:0;right:0;bottom:0;z-index:100;background:#fff;border-top:2px solid #009090;padding:10px 16px calc(10px + env(safe-area-inset-bottom));box-shadow:0 -2px 12px rgba(0,0,0,.08);}
+  .cb-inner{max-width:820px;margin:0 auto;}
+  .cb-status{font-size:12px;color:#555;text-align:center;margin-bottom:8px;line-height:1.5;}
+  .cb-status:empty{display:none;}
+  .cb-btn{width:100%;border-radius:6px;padding:13px 10px;font-size:13px;font-weight:800;font-family:inherit;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;background:#009090;color:#fff;border:1.5px solid #009090;}
 </style>
 </head>
 <body>
@@ -746,6 +775,18 @@ Sort Code: 55-61-17</textarea>
   <div id="log-list"></div>
 </div>
 
+<!-- Customer view -->
+<div id="customer-view">
+  <div class="cv-pages" id="cv-pages"><div class="cv-loading">Loading your invoice…</div></div>
+  <a class="cv-review" href="https://g.page/r/CbI8a2yoeQHhEBM/review" target="_blank" rel="noopener">⭐ Happy with the work? Leave us a Google review</a>
+</div>
+<div class="customer-bar" id="customer-bar">
+  <div class="cb-inner">
+    <div class="cb-status" id="cb-status"></div>
+    <button class="cb-btn" onclick="customerDownload()">Download PDF</button>
+  </div>
+</div>
+
 <div class="sendbar">
   <button type="button" class="send-btn" id="pdfBtn">1. Download PDF Invoice</button>
   <button type="button" class="add-btn" id="sendBtn" style="margin-top:8px; border-color:var(--teal); color:var(--teal);">2. Open Email &amp; Attach PDF</button>
@@ -824,7 +865,17 @@ Sort Code: 55-61-17</textarea>
   document.getElementById('depositPaid').addEventListener('input', calcTotals);
 
   addItem();
-  setDefaults();
+  if (VIEW_ID) {
+    initCustomerView();
+  } else {
+    setDefaults();
+    if (window.SC) {
+      SC.startOwner();
+      window.addEventListener('sc-unlocked', function() {
+        if (document.getElementById('tab-log').classList.contains('active')) renderLog();
+      });
+    }
+  }
 
   function buildInvoice(){
     const invoiceNo = 'INV-' + (document.getElementById('invoiceNo').value || '001');
@@ -878,9 +929,11 @@ Sort Code: 55-61-17</textarea>
 
   function sendInvoice(){
     const inv = buildInvoice();
+    const link = onlineLink(inv.invoiceNo);
     const shortBody =
 'Hi ' + inv.clientName + ',\n\n' +
 'Please see attached PDF for invoice.\n\n' +
+(link ? 'You can also view it online:\n' + link + '\n\n' : '') +
 'Thanks,\n' +
 'Smith Carpentry\n' +
 inv.fromPhone;
@@ -897,7 +950,7 @@ inv.fromPhone;
     document.getElementById('hintText').textContent = 'Mail opening — remember to tap the paperclip/attach icon and add the PDF you just downloaded.';
   }
 
-  function generatePDF(){
+  function buildPdfDoc(){
     const inv = buildInvoice();
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF({ unit: 'pt', format: 'a4' });
@@ -1077,8 +1130,12 @@ inv.fromPhone;
 
     const clientForFile = (document.getElementById('clientName').value || '').trim();
     const filename = ((clientForFile ? clientForFile + ' ' : '') + inv.invoiceNo).replace(/[\\/:*?"<>|]/g, '') + '.pdf';
-    doc.save(filename);
+    return { doc: doc, filename: filename };
+  }
 
+  function generatePDF(){
+    const pdf = buildPdfDoc();
+    pdf.doc.save(pdf.filename);
     document.getElementById('hintText').textContent = 'PDF downloaded — now tap "Open Email & Attach PDF" and attach it before sending.';
   }
 
@@ -1107,7 +1164,7 @@ inv.fromPhone;
     var ref   = 'INV-' + (document.getElementById('invoiceNo').value || '001');
     var total = document.getElementById('totalOut').textContent || '£0.00';
     var due   = document.getElementById('dueDate').value;
-    return 'Hi ' + firstName + ',\n\nThank you for choosing Smith Carpentry — it was a pleasure working with you and I hope you\'re happy with the finished result.\n\nPlease find your invoice attached for ' + total + (due ? ', due by ' + fmtDisplay(due) : '') + '. Payment can be made by bank transfer using the details shown on the invoice.\n\nIf you have a spare moment, a Google review would mean the world to a small business like mine — there\'s a link at the bottom of your invoice that takes you straight there.\n\nThanks again and don\'t hesitate to get in touch if you need anything in the future.\n\nKind regards,\nHarvey Smith\nSmith Carpentry\n07462 918476\nsmithcarpentryltd@outlook.com';
+    return 'Hi ' + firstName + ',\n\nThank you for choosing Smith Carpentry — it was a pleasure working with you and I hope you\'re happy with the finished result.\n\nPlease find your invoice attached for ' + total + (due ? ', due by ' + fmtDisplay(due) : '') + '. Payment can be made by bank transfer using the details shown on the invoice.' + (onlineLink(ref) ? '\n\nYou can also view your invoice online:\n' + onlineLink(ref) : '') + '\n\nIf you have a spare moment, a Google review would mean the world to a small business like mine — there\'s a link at the bottom of your invoice that takes you straight there.\n\nThanks again and don\'t hesitate to get in touch if you need anything in the future.\n\nKind regards,\nHarvey Smith\nSmith Carpentry\n07462 918476\nsmithcarpentryltd@outlook.com';
   }
 
   function updateEmailPreview() {
@@ -1154,8 +1211,31 @@ inv.fromPhone;
       })
     };
     var existing = log.findIndex(function(e){ return e.ref === entry.ref; });
+    // Online copy: keep the same link when an invoice is re-saved
+    var prevDocId = existing >= 0 ? log[existing].docId : null;
+    if (prevDocId) entry.docId = prevDocId;
+    else if (window.SC && SC.hasKey()) entry.docId = SC.newId();
     if (existing >= 0) log[existing] = entry; else log.unshift(entry);
     saveLog(log);
+    if (entry.docId && window.SC && SC.hasKey()) {
+      var online = Object.assign({}, entry, {
+        fromPhone: document.getElementById('fromPhone').value || '',
+        fromEmail: document.getElementById('fromEmail').value || '',
+        payment:   document.getElementById('paymentDetails').value || ''
+      });
+      delete online.clientEmail;
+      delete online.docId;
+      SC.publish('invoice', entry.docId, online).then(function(ok) {
+        if (!ok) alert('The PDF is fine, but the online copy of ' + entry.ref + " couldn't be uploaded, so its link won't be up to date. Check your connection and download the PDF again.");
+      });
+    }
+    return entry;
+  }
+
+  function onlineLink(ref) {
+    if (!window.SC) return '';
+    var saved = getLog().find(function(e){ return e.ref === ref; });
+    return saved && saved.docId ? SC.linkFor('invoice', saved.docId) : '';
   }
   function renderLog() {
     var log = getLog();
@@ -1164,11 +1244,14 @@ inv.fromPhone;
     el.innerHTML = log.map(function(e, i){
       return '<div class="log-row">' +
         '<div class="log-ref">' + escHtml(e.ref || '') + '</div>' +
-        '<div class="log-meta"><div class="log-client">' + escHtml(e.client || '—') + '</div><div class="log-date">Invoiced ' + fmtDisplay(e.date) + '</div></div>' +
+        '<div class="log-meta"><div class="log-client">' + escHtml(e.client || '—') + '</div><div class="log-date">Invoiced ' + fmtDisplay(e.date) + '</div>' +
+          (e.docId ? '<div class="log-status" data-doc="' + escHtml(e.docId) + '"></div>' : '') + '</div>' +
         '<div class="log-right"><div class="log-total">' + escHtml(e.total || '') + '</div><div class="log-date">Saved ' + fmtDisplay(e.saved) + '</div>' +
-        '<button onclick="loadInvoice(' + i + ')" style="margin-top:4px;background:var(--teal);color:#0a1010;border:none;border-radius:5px;padding:4px 10px;font-size:11px;font-weight:800;font-family:inherit;cursor:pointer;letter-spacing:0.05em">LOAD</button></div>' +
+        '<button onclick="loadInvoice(' + i + ')" style="margin-top:4px;background:var(--teal);color:#0a1010;border:none;border-radius:5px;padding:4px 10px;font-size:11px;font-weight:800;font-family:inherit;cursor:pointer;letter-spacing:0.05em">LOAD</button>' +
+        (e.docId ? '<button class="log-link-btn" onclick="SC.copyLink(\'invoice\',\'' + escHtml(e.docId) + '\',this)">LINK</button>' : '') + '</div>' +
         '</div>';
     }).join('');
+    if (window.SC) SC.fillStatuses();
   }
   function escHtml(s) {
     return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -1213,6 +1296,11 @@ inv.fromPhone;
     if (!e) return;
     if (!e.items) { alert(e.ref + ' was saved before full invoice details were stored, so it can\'t be reloaded.'); return; }
     if (!confirm('Load ' + e.ref + ' for ' + (e.client || 'this client') + '? This will replace the current invoice.')) return;
+    fillInvoice(e);
+    showTab('invoice');
+  }
+
+  function fillInvoice(e) {
     document.getElementById('invoiceNo').value   = String(e.ref || '').replace(/^INV-/, '');
     document.getElementById('invoiceDate').value = e.date || '';
     document.getElementById('dueDate').value     = e.dueDate || '';
@@ -1223,7 +1311,77 @@ inv.fromPhone;
     document.getElementById('depositPaid').value = e.depositPaid || '0';
     document.getElementById('notes').value       = e.notes || '';
     fillItems(e.items);
-    showTab('invoice');
+  }
+
+  // ---- Customer view (/i/<id>): shows the same PDF the customer was sent ----
+  var viewPdf = null;
+  var PDFJS = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/';
+
+  function initCustomerView() {
+    var pages = document.getElementById('cv-pages');
+    function fail() {
+      pages.innerHTML = '<div class="cv-error">This invoice link isn\'t valid any more. Please contact Harvey on <a href="tel:07462918476">07462 918476</a>.</div>';
+      document.getElementById('customer-bar').style.display = 'none';
+    }
+    if (!window.SC) return fail();
+    SC.fetchDoc(VIEW_ID).then(function(res) {
+      if (res.type !== 'invoice') throw new Error('Not an invoice');
+      var d = res.data;
+      fillInvoice(d);
+      if (d.fromPhone) document.getElementById('fromPhone').value = d.fromPhone;
+      if (d.fromEmail) document.getElementById('fromEmail').value = d.fromEmail;
+      if (d.payment)   document.getElementById('paymentDetails').value = d.payment;
+      calcTotals();
+      viewPdf = buildPdfDoc();
+      document.title = viewPdf.filename.replace(/\.pdf$/, '');
+      var label = document.getElementById('totalLabel').textContent === 'BALANCE DUE' ? 'Balance due' : 'Total due';
+      document.getElementById('cb-status').textContent = (d.ref || 'Invoice') + ' · ' + label + ' ' +
+        document.getElementById('totalOut').textContent + (d.dueDate ? ' by ' + fmtDisplay(d.dueDate) : '');
+      SC.recordView(VIEW_ID);
+      renderPdfPages(viewPdf.doc.output('arraybuffer'), pages);
+    }).catch(fail);
+  }
+
+  function loadScript(src) {
+    return new Promise(function(resolve, reject) {
+      var s = document.createElement('script');
+      s.src = src;
+      s.onload = resolve;
+      s.onerror = reject;
+      document.head.appendChild(s);
+    });
+  }
+
+  // Draw each PDF page as an image (works the same on every phone), falling back to the browser's viewer
+  function renderPdfPages(buf, container) {
+    return loadScript(PDFJS + 'pdf.min.js').then(function() {
+      window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS + 'pdf.worker.min.js';
+      return window.pdfjsLib.getDocument({ data: new Uint8Array(buf.slice(0)) }).promise;
+    }).then(function(pdf) {
+      container.innerHTML = '';
+      var width = Math.min(container.clientWidth || window.innerWidth, 820);
+      var chain = Promise.resolve();
+      for (var n = 1; n <= pdf.numPages; n++) (function(n) {
+        chain = chain.then(function() { return pdf.getPage(n); }).then(function(page) {
+          var base = page.getViewport({ scale: 1 });
+          var vp = page.getViewport({ scale: (width / base.width) * (window.devicePixelRatio || 1) });
+          var canvas = document.createElement('canvas');
+          canvas.className = 'cv-page';
+          canvas.width = vp.width;
+          canvas.height = vp.height;
+          container.appendChild(canvas);
+          return page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
+        });
+      })(n);
+      return chain;
+    }).catch(function() {
+      container.innerHTML = '<iframe class="cv-frame" title="Invoice" src="' +
+        URL.createObjectURL(new Blob([buf], { type: 'application/pdf' })) + '"></iframe>';
+    });
+  }
+
+  function customerDownload() {
+    if (viewPdf) viewPdf.doc.save(viewPdf.filename);
   }
 
   function clearLog() {
@@ -1302,71 +1460,5 @@ inv.fromPhone;
     <button class="modal-cancel" onclick="document.getElementById('importModal').classList.remove('open')">Cancel</button>
   </div>
 </div>
-<script>
-// Cloud sync — only runs on (www.)smithcarpentry.uk, not local files.
-// Both logs are synced on both pages so "Import from Quote" works across devices.
-(function() {
-  if (!/(^|\.)smithcarpentry\.uk$/.test(location.hostname)) return; // with or without www
-
-  var KEYS = ['sc_quote_log', 'sc_invoice_log'];
-  var origSetItem = localStorage.setItem.bind(localStorage);
-  var origRemoveItem = localStorage.removeItem.bind(localStorage);
-
-  function readLocal(key) {
-    try { return JSON.parse(localStorage.getItem(key) || '[]'); } catch(e) { return []; }
-  }
-
-  function cloudGet(key) {
-    return fetch('/api/sync?key=' + key, { cache: 'no-store' })
-      .then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
-      .then(function(res) { return Array.isArray(res.data) ? res.data : []; });
-  }
-
-  function cloudSet(key, data) {
-    return fetch('/api/sync', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ key: key, data: data })
-    }).catch(function(){});
-  }
-
-  // Newer entries win; old entries without a timestamp fall back to their saved date
-  function stamp(e) { return e.ts || Date.parse(e.saved || '') || 0; }
-
-  function merge(local, cloud) {
-    var byRef = {};
-    local.concat(cloud).forEach(function(e) {
-      if (!e || !e.ref) return;
-      var cur = byRef[e.ref];
-      if (!cur || stamp(e) > stamp(cur)) byRef[e.ref] = e;
-    });
-    return Object.keys(byRef).map(function(k) { return byRef[k]; })
-      .sort(function(a, b) { return stamp(b) - stamp(a); });
-  }
-
-  // Pull the cloud copy, merge with this device, store locally and push the merged list back.
-  // If the pull fails we don't push, so a flaky connection can't wipe the cloud copy.
-  function syncKey(key) {
-    return cloudGet(key).then(function(cloud) {
-      var merged = merge(readLocal(key), cloud);
-      origSetItem(key, JSON.stringify(merged));
-      var logTab = document.getElementById('tab-log');
-      if (logTab && logTab.classList.contains('active') && typeof renderLog === 'function') renderLog();
-      return cloudSet(key, merged);
-    }).catch(function(){});
-  }
-
-  KEYS.forEach(syncKey);
-
-  localStorage.setItem = function(key, value) {
-    origSetItem(key, value);
-    if (KEYS.indexOf(key) >= 0) syncKey(key);
-  };
-  localStorage.removeItem = function(key) {
-    origRemoveItem(key);
-    if (KEYS.indexOf(key) >= 0) cloudSet(key, []);
-  };
-})();
-</script>
 </body>
 </html>
