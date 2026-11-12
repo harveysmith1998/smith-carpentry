@@ -661,6 +661,11 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
   .cb-status{font-size:12px;color:#555;text-align:center;margin-bottom:8px;line-height:1.5;}
   .cb-status:empty{display:none;}
   .cb-btn{width:100%;border-radius:6px;padding:13px 10px;font-size:13px;font-weight:800;font-family:inherit;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;background:#009090;color:#fff;border:1.5px solid #009090;}
+
+  /* Log export / import */
+  .log-tools { display: flex; gap: 2px; align-items: center; }
+  .log-tool-btn { background: none; border: none; color: var(--teal); font-size: 10px; cursor: pointer; padding: 2px 6px; font-family: inherit; }
+  .log-tool-btn:hover { text-decoration: underline; }
 </style>
 </head>
 <body>
@@ -770,7 +775,11 @@ Sort Code: 55-61-17</textarea>
 <div class="tab-panel" id="tab-log">
   <div class="log-header">
     <span>Saved Invoices</span>
-    <button class="log-clear-btn" onclick="clearLog()">Clear all</button>
+    <div class="log-tools">
+      <button class="log-tool-btn" onclick="exportLogs()">Export</button>
+      <label class="log-tool-btn">Import<input type="file" accept=".json,application/json" style="display:none" onchange="importLogs(this)"></label>
+      <button class="log-clear-btn" onclick="clearLog()">Clear all</button>
+    </div>
   </div>
   <div id="log-list"></div>
 </div>
@@ -1449,6 +1458,61 @@ inv.fromPhone;
 
     document.getElementById('importModal').classList.remove('open');
   }
+// ---- Export / import logs: move quote and invoice logs between devices or from the Desktop file ----
+function scReadLog(key) {
+  try { return JSON.parse(localStorage.getItem(key) || '[]'); } catch (e) { return []; }
+}
+function scLogStamp(e) { return e.ts || Date.parse(e.saved || '') || 0; }
+function scMergeLogs(local, incoming) {
+  var byRef = {};
+  local.concat(incoming).forEach(function(e) {
+    if (!e || !e.ref) return;
+    if (!byRef[e.ref] || scLogStamp(e) > scLogStamp(byRef[e.ref])) byRef[e.ref] = e;
+  });
+  return Object.keys(byRef).map(function(k) { return byRef[k]; })
+    .sort(function(a, b) { return scLogStamp(b) - scLogStamp(a); });
+}
+function exportLogs() {
+  var data = {
+    app: 'smith-carpentry',
+    exported: new Date().toISOString(),
+    sc_quote_log: scReadLog('sc_quote_log'),
+    sc_invoice_log: scReadLog('sc_invoice_log')
+  };
+  var d = new Date();
+  var stamp = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }));
+  a.download = 'smith-carpentry-logs-' + stamp + '.json';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  alert('Exported ' + data.sc_quote_log.length + ' quotes and ' + data.sc_invoice_log.length +
+    ' invoices to ' + a.download + ' (in your Downloads). Import that file in the website version.');
+}
+function importLogs(input) {
+  var file = input.files && input.files[0];
+  input.value = '';
+  if (!file) return;
+  file.text().then(function(text) {
+    var data = JSON.parse(text);
+    if (!data || data.app !== 'smith-carpentry') throw new Error('Not an export file');
+    var added = { sc_quote_log: 0, sc_invoice_log: 0 };
+    Object.keys(added).forEach(function(key) {
+      if (!Array.isArray(data[key])) return;
+      var local = scReadLog(key);
+      var known = {};
+      local.forEach(function(e) { if (e && e.ref) known[e.ref] = true; });
+      data[key].forEach(function(e) { if (e && e.ref && !known[e.ref]) { known[e.ref] = true; added[key]++; } });
+      localStorage.setItem(key, JSON.stringify(scMergeLogs(local, data[key])));
+    });
+    renderLog();
+    alert('Imported ' + added.sc_quote_log + ' new quotes and ' + added.sc_invoice_log + ' new invoices.' +
+      (window.SC && SC.hasKey() ? ' They will sync to your other devices.' : ''));
+  }).catch(function() {
+    alert("That file couldn't be imported. Choose the smith-carpentry-logs file from your Downloads.");
+  });
+}
 </script>
 
 
